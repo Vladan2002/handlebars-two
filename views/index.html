@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/test.css">
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar__gray">
+        <div class="navbar__gray__left"><p class="navbar__gray__text">Engleski</p>
+            <p class="navbar__gray__text"> Crnogorski </p>
+            <p class="navbar__gray__text"> Svakog dana od 08:00 do 21:00 h, osim nedeljom Tel: +382 20 656 772</p></div>
+        <div class="navbar__gray__right"><p class="navbar__gray__text">On-line Podrska </p>
+            <p class="navbar__gray__text"> Registracija</p>
+            <p class="navbar__gray__text"> Prijava</p></div>
+    </div>
+    <header class="navbar__header">
+        <div class="navbar__header__container">
+            <div class="navbar__header__left">
+                <div class="navbar__header__left__logo">
+                    <a href="http://localhost:3002">
+                        <span class="navbar__header__left__text">CENTRO</span><span class="navbar__header__left__text">METAL</span>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar__header__right">
+                <div class="navbar__header__right__search">
+                    <input class="navbar__header__right__input" type="text" placeholder="Unesi šifru ili pojam pretraživanja">
+                    <i class="fa-solid fa-magnifying-glass navbar__header__right__search__magnify"></i>
+                </div>
+                <div class="navbar__header__right__buy">
+                    <a class="navbar__header__right__link" href="#"><i class="fa-brands fa-facebook-f navbar__header__right__buy__icon"></i></a>
+                    <a class="navbar__header__right__link navbar__header__right__buy__basket" href="#" >MOJA KORPA</a>
+                    <p class="navbar__header__right__text">0.00$</p>
+                    <a class="navbar__header__right__link" href="#" style="background-color:#0BA2D6;"><i class="fa-solid fa-cart-shopping navbar__header__right__icon"></i></a>
+                    <div class="navbar__burger-menu" onclick="toggleMenu()">
+                        <i class="fa-solid fa-bars navbar__burger-menu__icon"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="navbar__small">
+        <div class="navbar__trapezoid-left"></div>
+
+
+        <div class="navbar__small__select" id="select-menu">
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)"><i class="fa-solid fa-house navbar__small__select__icon"></i></a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Akcija</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Rasprodaja</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Katalozi</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Novosti</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">O nama</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Uradi sam</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Vip kartica</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Kontakt</a>
+            <a class="navbar__small__select__button" href="#">
+                <p class="navbar__small__select__text">Informacije</p>
+                <p class="navbar__header__right__text">tel: 020 123 456</p>
+            </a>
+        </div>
+
+        <div class="navbar__trapezoid-right"></div>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="container__side">
+        <div class="container__side__menu" id="menu">
+        <script id="menu-template" type="text/x-handlebars-template">
+
+                <button class="container__side__menu__button" onclick="categories()">
+                    <img class="container__side__menu__button__img" src="../assets/grid.png" alt="">
+                    <p class="container__side__menu__text container__side__menu__text__case">Kupuj po kategoriji</p>
+                </button>
+
+                {{#each categories}}
+                    {{> accordion}}
+                {{/each}}
+        </script>
+            </div>
+
+
+        <div class="container__side__search-brand">
+            <i class="fa-solid fa-envelope"></i>
+            Pretraži po brendu
+            <input class="container__side__search-brand__input" type="text">
+            <i class="fa-solid fa-magnifying-glass container__side__search-brand__magnify"></i>
+
+        </div>
+        <div class="container__side__ad">
+            <img class="container__side__ad__img" src="" alt="">
+
+
+        </div>
+        <div class="container__side__newsletter">
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                prijavi se na newsletter
+            </p>
+            <input class="container__side__newsletter__input" type="text" placeholder="Ime i prezime">
+            <input class="container__side__newsletter__input" type="text" placeholder="Email">
+            <button class="container__side__button-blue">Prijavi se</button>
+        </div>
+        <div class="container__side__makita-post">
+            <div class="container__side__makita-post__img-wrap">
+                <img class="container__side__makita-post__img"  src="" alt="">
+            </div>
+            <h5 class="container__side__makita-post__title">Lorem ipsum dolor sit amet.</h5>
+            <p>consectetur adipisicing elit.
+                Aperiam commodi cumque dicta, dignissimos,
+                dolores eveniet ex ipsa ipsum itaque maxime modi nemo numquam optio placeat quasi quis repellendus
+                reprehenderit repudiandae.</p>
+
+            <button class="container__side__button-blue">Opširnije</button>
+        </div>
+        <div class="container__side__makita-post">
+            <div class="container__side__makita-post__img-wrap">
+                <img class="container__side__makita-post__img"  src="" alt="">
+            </div>
+            <h5 class="container__side__makita-post__title">Lorem ipsum dolor sit amet.</h5>
+            <p>consectetur adipisicing elit.
+                Aperiam commodi cumque dicta, dignissimos,
+                dolores eveniet ex ipsa ipsum itaque maxime modi nemo numquam optio placeat quasi quis repellendus
+                reprehenderit repudiandae.</p>
+
+            <button class="container__side__button-blue">Opširnije</button>
+        </div>        <div class="container__side__ad">
+        <img  class="container__side__ad__img" src="" alt="">
+        <p class="container__side__ad__text">Fashion cipele</p>
+        <p class="container__side__ad__text">Veneno</p>
+
+    </div>
+    </div>
+
+
+    <div class="container__products">
+        <div class="container__products__slider">
+            <div class="container__products__slider__show">
+
+                <div class="container__products__slider__show__slides">
+                    <img class="container__products__slider__show__img container__products__slider__show__img--active" src="https://picsum.photos/id/23/900/200" alt="">
+                </div>
+                <div class="container__products__slider__show__slides">
+                    <img class="container__products__slider__show__img" src="https://picsum.photos/id/24/900/200" alt="">
+                </div>
+                <div class="container__products__slider__show__slides">
+                    <img class="container__products__slider__show__img" src="https://picsum.photos/id/25/900/200" alt="">
+                </div>
+                <div class="container__products__slider__show__slides">
+                </div>
+                <div class="container__products__slider__show__slides">
+                    <img class="container__products__slider__show__img" src="https://picsum.photos/id/26/900/200" alt="">
+                </div>
+
+                <button class="container__products__slider__show__controls container__products__slider__show__controls--previous" onclick="minusSlide()" id="prev"><</button>
+                <button class="container__products__slider__show__controls container__products__slider__show__controls--next" onclick="plusSlide()" id="next">></button>
+
+                <div class="container__products__slider__pager" id="pager"></div>
+            </div>
+            <div class="progress-container">
+                <div class="progress" id="progress"></div>
+                <div class="progress-bg"></div>
+            </div>
+        </div>
+
+        <div class="container__products__shape">
+
+
+            <div class="container__products__shape__trapez container__products__shape__trapez--dark">
+                <p class="container__products__shape__text"><i class="fa-solid fa-fire"></i> Vruća ponuda</p></div>
+
+        </div>
+
+
+
+        <div class="container__products__discounts">
+
+
+            <div class="container__products__bar" id="product-list">
+                <div id="loader" class="loader">
+                    <div class="spinner"></div>
+                </div>
+            <script id="product-template" type="text/x-handlebars-template">
+
+                {{#each products}}
+                    {{> card}}
+                {{/each}}
+                 </script>
+                </div>
+
+            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
+
+        </div>
+
+        <div class="container__products__shape">
+
+            <div class="container__products__shape__trapez">
+                <p class="container__products__shape__text"><i class="fa-solid fa-tag fa-rotate-90"></i> AKCIJA - POPUSTI</p>
+            </div>
+
+        </div>
+        <div class="container__products__discounts">
+            <div class="container__products__bar" >
+                <script type="text/x-handlebars-template">
+
+                    {{#each products}}
+                        {{> card}}
+                    {{/each}}
+                 </script>
+            </div>
+
+
+            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
+        </div>
+        <div class="container__products__shape">
+
+            <div class="container__products__shape__trapez">
+                <p class="container__products__shape__text"><i class="fa-solid fa-star"></i> Preporučujemo</p></div>
+
+        </div>
+
+
+        <div class="container__products__discounts">
+            <div class="container__products__bar">
+                <script type="text/x-handlebars-template">
+
+                    {{#each products}}
+                        {{> card}}
+                    {{/each}}
+                 </script>
+            </div>
+
+            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
+
+        </div>
+
+        <div class="container__products__shape">
+
+            <div class="container__products__shape__trapez">
+                <p class="container__products__shape__text"><i class="fa-solid fa-heart"></i> Novo u ponudi</p></div>
+
+        </div>
+
+
+        <div class="container__products__discounts">
+            <div class="container__products__bar">
+                {{#each products}}
+                    {{>card}}
+                {{/each}}
+            </div>
+
+            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
+
+        </div>
+
+        <div class="container__products__shape">
+            <div class="container__products__shape__trapez container__products__shape__trapez--yellow">
+                <p class="container__products__shape__text"> <i class="fa-solid fa-sun"></i> Rasprodaja</p></div>
+
+        </div>
+
+
+        <div class="container__products__discounts">
+            <div class="container__products__bar">
+                {{#each products}}
+                    {{>card}}
+                {{/each}}
+            </div>
+            <button  class="container__products__discounts__button container__products__discounts__button--yellow ">Pogledajte sve proizvode iz vruće ponude</button>
+
+        </div>
+
+
+        <div class="container__products__search-brand">
+            <i class="fa-solid fa-envelope"></i>
+            Pretraži po brendu
+            <input class="container__products__search-brand__input" type="text">
+            <i class="fa-solid fa-magnifying-glass container__products__search-brand__magnify"></i>
+
+        </div>
+        <div class="container__products__newsletter">
+            <p>
+                <i class="fa-solid fa-envelope"></i>
+                prijavi se na newsletter
+            </p>
+            <input class="container__products__newsletter__input" type="text" placeholder="Ime i prezime">
+            <input class="container__products__newsletter__input" type="text" placeholder="Email">
+            <button class="container__side__button-blue">Prijavi se</button>
+        </div>
+
+        <div class="container__products__makita-post">
+            <div class="container__products__makita-post__img-wrap">
+                <img class="container__products__makita-post__img"  src="" alt="">
+            </div>
+            <h5 class="container__products__makita-post__title">Lorem ipsum dolor sit amet.</h5>
+            <p>consectetur adipisicing elit.
+                Aperiam commodi cumque dicta, dignissimos,
+                dolores eveniet ex ipsa ipsum itaque maxime modi nemo numquam optio placeat quasi quis repellendus
+                reprehenderit repudiandae.</p>
+            <button class="container__side__button-blue">Opširnije</button>
+        </div>
+        <div class="container__products__makita-post">
+            <div class="container__products__makita-post__img-wrap">
+                <img class="container__products__makita-post__img"  src="" alt="">
+            </div>
+            <h5 class="container__products__makita-post__title">Lorem ipsum dolor sit amet.</h5>
+            <p>consectetur adipisicing elit.
+                Aperiam commodi cumque dicta, dignissimos,
+                dolores eveniet ex ipsa ipsum itaque maxime modi nemo numquam optio placeat quasi quis repellendus
+                reprehenderit repudiandae.</p>
+            <button class="container__side__button-blue" >Opširnije</button>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+<div class="bottom-container">
+    <div class="bottom-container__footer">
+        <div class="bottom-container__footer__content">
+            <h5 class="bottom-container__footer__title">Informacije</h5>
+            <p class="bottom-container__footer__text">O nama</p>
+            <p class="bottom-container__footer__text">Gdje kupiti</p>
+            <p class="bottom-container__footer__text">Zaposljenje</p>
+            <p class="bottom-container__footer__text">Aktivnosti</p>
+        </div>
+
+        <div class="bottom-container__footer__content">
+            <h5 class="bottom-container__footer__title">Aktivnosti</h5>
+            <p class="bottom-container__footer__text">Akcije</p>
+            <p class="bottom-container__footer__text">Noviteti</p>
+            <p class="bottom-container__footer__text">Rasprodaja</p>
+            <p class="bottom-container__footer__text">Marketing</p>
+        </div>
+
+        <div class="bottom-container__footer__content">
+            <h5 class="bottom-container__footer__title">Moja strana</h5>
+            <p class="bottom-container__footer__text">Registracija</p>
+            <p class="bottom-container__footer__text">Prijava</p>
+            <p class="bottom-container__footer__text">Korisnička strana</p>
+            <p class="bottom-container__footer__text">Korpa</p>
+        </div>
+
+        <div class="bottom-container__footer__content">
+            <h5 class="bottom-container__footer__title">Plaćanje i dostava</h5>
+            <p class="bottom-container__footer__text">Načini plaćanja</p>
+            <p class="bottom-container__footer__text">Sigurnost plaćanja</p>
+            <p class="bottom-container__footer__text">Brza i pouzdana dostava</p>
+            <p class="bottom-container__footer__text">Odaberite datum dostave</p>
+        </div>
+
+        <div class="bottom-container__footer__content">
+            <h5 class="bottom-container__footer__title">Povrat i zamjena</h5>
+            <p class="bottom-container__footer__text">Servis</p>
+            <p class="bottom-container__footer__text">Reklamacije</p>
+        </div>
+
+    </div>
+
+    <div class="bottom-container__copyright">
+        <p class="bottom-container__copyright__text">© 2016 Copyright by <a href="">centrometal.me</a> All rights reserved</p>
+    </div>
+
+</div>
+</body>
+
+<script src="../../scripts/skripta.js"></script>
+</html>
+

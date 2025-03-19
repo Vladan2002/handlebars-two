@@ -1,0 +1,22 @@
+<div class="container__products__bar__card">
+    <a href="/product/{{this.id}}" style="text-decoration: none; color: black;">
+        <div class="container__products__bar__img-wrapper">
+            <img src="{{this.image}}" alt="{{this.name}}" class="container__products__bar__img">
+            {{#if this.discount}}
+                <div class="container__products__bar__badge">{{this.discount}}%</div>
+            {{/if}}
+        </div>
+        <h5 class="container__products__bar__name">{{this.name}}</h5>
+
+        {{#if this.discount}}
+            <span class="container__products__bar__timer" id="timer-{{this.id}}">10d 6h 15m 10s</span>
+        {{/if}}
+
+        <div class="bar__price">
+            {{#if this.discount}}
+                <span class="container__products__bar__price bar__price--old">${{this.price}}</span>
+            {{/if}}
+            <span class="container__products__bar__price bar__price--new">${{this.newPrice}}</span>
+        </div>
+    </a>
+</div>

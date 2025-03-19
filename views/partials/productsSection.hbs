@@ -1,0 +1,80 @@
+<div class="container__products__shape">
+    <div class="container__products__shape__trapez container__products__shape__trapez--{{color}}">
+        <p class="container__products__shape__text">
+            <i class="{{icon}}"></i>{{name}}
+        </p>
+    </div>
+</div>
+
+<div class="container__products__discounts">
+    <div class="container__products__bar" id="hotDeals-container">
+        <div class="skeleton-loader {{#if cards}}loader--hidden{{/if}}" id="{{loaderId}}">
+            <div class="container__products__bar__card skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-badge"></div>
+                <div class="skeleton skeleton-name"></div>
+                <div class="skeleton skeleton-timer"></div>
+                <div class="skeleton skeleton-price"></div>
+            </div>
+            <div class="container__products__bar__card skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-badge"></div>
+                <div class="skeleton skeleton-name"></div>
+                <div class="skeleton skeleton-timer"></div>
+                <div class="skeleton skeleton-price"></div>
+            </div>
+            <div class="container__products__bar__card skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-badge"></div>
+                <div class="skeleton skeleton-name"></div>
+                <div class="skeleton skeleton-timer"></div>
+                <div class="skeleton skeleton-price"></div>
+            </div>
+            <div class="container__products__bar__card skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-badge"></div>
+                <div class="skeleton skeleton-name"></div>
+                <div class="skeleton skeleton-timer"></div>
+                <div class="skeleton skeleton-price"></div>
+            </div>
+            {{#if loaderId}}
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+            {{/if}}
+
+        </div>
+
+        {{#each cards}}
+            {{> card}}
+        {{/each}}
+    </div>
+    <button class="container__products__discounts__button container__products__discounts__button--{{color}}">
+        Pogledajte sve proizvode iz vruće ponude
+    </button>
+</div>

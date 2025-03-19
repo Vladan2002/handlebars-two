@@ -1,0 +1,45 @@
+<div class="main__table">
+    <div class="main__table__tabs">
+        <button class="main__table__tabs__button main__table__tabs--active" onclick="openTab(event, 'proizvod')">PROIZVODNA LISTA</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'uputstvo')">UPUTSTVO ZA RUKOVANJE</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'ocjena')">OCJENA</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'email')">E-MAIL</button>
+    </div>
+
+    <div id="proizvod" class="main__table__content main__table--active">
+        <div class="main__table__content__info">
+            <div class="main__table__content__info__left">
+                {{#each this.productSpecsLeft}}
+                    <p>{{this}}</p>
+                {{/each}}
+            </div>
+            <div class="main__table__content__info__right">
+                {{#each this.productSpecsRight}}
+                    <p>{{this}}</p>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <div id="uputstvo" class="main__table__content">
+        <button class="main__table__content__button"><a class="main__table__content__link" href="src/assets/upustvo.pdf">Upustvo</a></button>
+    </div>
+
+    <div id="ocjena" class="main__table__content">
+        <p>Ocijenite ovaj proizvod</p>
+        <span class="fa fa-star" onclick="rateStar(1)"></span>
+        <span class="fa fa-star" onclick="rateStar(2)"></span>
+        <span class="fa fa-star" onclick="rateStar(3)"></span>
+        <span class="fa fa-star" onclick="rateStar(4)"></span>
+        <span class="fa fa-star" onclick="rateStar(5)"></span>
+        <p id="rating-value">0</p>
+    </div>
+
+    <div id="email" class="main__table__content">
+        <div class="main__table__content__container">
+            <input class="main__table__content__input" type="text" placeholder="E-mail adresa">
+            <input class="main__table__content__input" type="text" placeholder="Naslov">
+            <textarea class="main__table__content__textarea" placeholder="Unesi tekst"></textarea>
+        </div>
+    </div>
+</div>

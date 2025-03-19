@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proizvod ID - {{this.productId}}</title>
+</head>
+<body>
+
+
+<div class="glavni">
+<div class="slider">
+
+    {{>productSlider productImages}}
+</div>
+    <div class="main__left__description">
+        <div class="main__left__description__title">
+            <h1 class="main__left__description__title__text">{{this.productName}}</h1>
+            <div class="main__left__description__sub-title"> <div class="main__left__description__sub-div">   <span class="main__left__description__sub-title__price">{{this.productNewPrice}}$</span></div> <div class="main__left__description__sub-div"> <span class="main__left__description__sub-title__text">{{this.productSKU}}</span> <p class="main__left__description__sub-title__code">Šifra artikla</p> </div> </div>
+        </div>
+
+        <div class="main__left__description__info">
+            <p class="main__left__description__info__text">Šifra artikla: {{this.productSKU}}</p>
+            {{#each this.productDesc}}
+                <p class="main__left__description__info__text">{{this}}</p>
+
+            {{/each}}
+        </div>
+        <div class="main__left__description__social">
+            <p class="main__left__description__text">Količina: </p>
+            <input class="main__left__description__input" type="text"  id="quantity" value="1" readonly>
+            <button class="main__left__description__button" onclick="decreaseQuantity()">-</button>
+            <button class="main__left__description__button" onclick="increaseQuantity()">+</button>
+            <span class="main__left__description__plus">+</span>
+            <p class="main__left__description__text">Share:</p>
+            <a href="" class="main__left__description__link"><i class="fa-brands fa-facebook-f main__left__description__icon main__left__description__link--icon-facebook "></i></a>
+            <a href="" class="main__left__description__link"> <i class="fa-brands fa-twitter main__left__description__icon  main__left__description__link--icon-twitter"></i></a>
+            <a href="" class="main__left__description__link"><i class="fa-regular fa-envelope main__left__description__icon main__left__description__link--icon-envelope "></i></a>
+            <a href="" class="main__left__description__link"><i class="fa-brands fa-google-plus-g main__left__description__icon  main__left__description__link--icon-gugl"></i></a>
+        </div>
+
+        <div>
+            <button class="main__left__button"><i class="fa-solid fa-cart-shopping main__left__button__icon"></i>Dodaj u korpu</button>
+            <button class="main__left__button">Provjeri korpu</button>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="main__table">
+
+    <div class="main__table__tabs">
+        <button class="main__table__tabs__button main__table__tabs--active" onclick="openTab(event, 'proizvod')">PROIZVODNA LISTA</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'uputstvo')">UPUTSTVO ZA RUKOVANJE</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'ocjena')">OCJENA</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'email')">E-MAIL</button>
+    </div>
+
+    <div id="proizvod" class="main__table__content main__table--active">
+        <div class="main__table__content__info">
+
+            <div class="main__table__content__info__left">
+                {{#each this.productSpecsLeft}}
+                    <p>{{this}}</p>
+                {{/each}}
+
+            </div>
+            <div class="main__table__content__info__right">
+                {{#each this.productSpecsRight}}
+                    <p>{{this}}</p>
+                {{/each}}
+            </div>
+
+
+        </div>
+    </div>
+
+    <div id="uputstvo" class="main__table__content">
+        <button class="main__table__content__button"><a class="main__table__content__link" href="src/assets/upustvo.pdf">Upustvo</a></button>
+    </div>
+
+    <div id="ocjena" class="main__table__content">
+        <p>Ocijenite ovaj proizvod</p>
+        <span class="fa fa-star" onclick="rateStar(1)"></span>
+        <span class="fa fa-star" onclick="rateStar(2)"></span>
+        <span class="fa fa-star" onclick="rateStar(3)"></span>
+        <span class="fa fa-star" onclick="rateStar(4)"></span>
+        <span class="fa fa-star" onclick="rateStar(5)"></span>
+        <p id="rating-value">0</p>
+    </div>
+
+    <div id="email" class="main__table__content">
+        <div class="main__table__content__container">
+
+            <input class="main__table__content__input" type="text" placeholder="E-mail adresa" >
+            <input class="main__table__content__input" type="text" placeholder="Naslov" >
+            <textarea class="main__table__content__textarea" placeholder="Unesi tekst"></textarea>
+        </div>
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+</div>
+
+</body>
+</html>

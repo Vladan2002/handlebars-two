@@ -1,0 +1,15 @@
+<button class="container__side__menu__button" onclick="toggleSubcategories('{{this.name}}')">
+    <p class="container__side__menu__text">{{this.name}}</p>
+    {{#if this.subcategories.length}}
+        <p class="container__side__menu__text">+</p>
+        </button>
+        {{#each this.subcategories}}
+            <button class="container__side__menu__button container__side__menu__button--subcategory container__side__menu__button--deactivate-button" data-category="{{../this.name}}">
+                <p class="container__side__menu__text">{{this.name}}</p>
+            </button>
+        {{/each}}
+
+    {{else}}
+        </button>
+    {{/if}}
+

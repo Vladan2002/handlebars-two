@@ -1,0 +1,80 @@
+<!-- views/layouts/main.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/test.css">
+</head>
+<body>
+<div class="navbar">
+    <div class="navbar__gray">
+        <div class="navbar__gray__left"><p class="navbar__gray__text">Engleski</p>
+            <p class="navbar__gray__text"> Crnogorski </p>
+            <p class="navbar__gray__text"> Svakog dana od 08:00 do 21:00 h, osim nedeljom Tel: +382 20 656 772</p></div>
+        <div class="navbar__gray__right"><p class="navbar__gray__text">On-line Podrska </p>
+            <p class="navbar__gray__text"> Registracija</p>
+            <p class="navbar__gray__text"> Prijava</p></div>
+    </div>
+    <header class="navbar__header">
+        <div class="navbar__header__container">
+            <div class="navbar__header__left">
+                <div class="navbar__header__left__logo">
+                    <a href="http://localhost:3002">
+                    <span class="navbar__header__left__text">CENTRO</span><span class="navbar__header__left__text">METAL</span>
+                    </a>
+                </div>
+            </div>
+            <div class="navbar__header__right">
+                <div class="navbar__header__right__search">
+                    <input class="navbar__header__right__input" type="text" placeholder="Unesi šifru ili pojam pretraživanja">
+                    <i class="fa-solid fa-magnifying-glass navbar__header__right__search__magnify"></i>
+                </div>
+                <div class="navbar__header__right__buy">
+                    <a class="navbar__header__right__link" href="#"><i class="fa-brands fa-facebook-f navbar__header__right__buy__icon"></i></a>
+                    <a class="navbar__header__right__link navbar__header__right__buy__basket" href="#" >MOJA KORPA</a>
+                    <p class="navbar__header__right__text">0.00$</p>
+                    <a class="navbar__header__right__link" href="#" style="background-color:#0BA2D6;"><i class="fa-solid fa-cart-shopping navbar__header__right__icon"></i></a>
+                    <div class="navbar__burger-menu" onclick="toggleMenu()">
+                        <i class="fa-solid fa-bars navbar__burger-menu__icon"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <div class="navbar__small">
+        <div class="navbar__trapezoid-left"></div>
+
+
+        <div class="navbar__small__select" id="select-menu">
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)"><i class="fa-solid fa-house navbar__small__select__icon"></i></a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Akcija</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Rasprodaja</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Katalozi</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Novosti</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">O nama</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Uradi sam</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Vip kartica</a>
+            <a class="navbar__small__select__button" href="#" onclick="navbar(this)">Kontakt</a>
+            <a class="navbar__small__select__button" href="#">
+                <p class="navbar__small__select__text">Informacije</p>
+                <p class="navbar__header__right__text">tel: 020 123 456</p>
+            </a>
+        </div>
+
+        <div class="navbar__trapezoid-right"></div>
+    </div>
+
+</div>
+
+
+<main>
+    {{{body}}}
+</main>
+
