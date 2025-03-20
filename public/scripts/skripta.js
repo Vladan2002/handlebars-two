@@ -198,8 +198,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadSection(section, index) {
 
 
+        await new Promise(resolve => setTimeout(resolve, 10000));
 
         var products = await prod(section.param);
+
+
+
         sections[index].cards = products;
         var sectionHtml = Handlebars.compile(document.getElementById("product-template").innerHTML)({ products: sections });
         document.getElementById("product-content").innerHTML = sectionHtml;
@@ -236,7 +240,6 @@ async function prod(parametar) {
             products[index].newPrice = product.discount > 0
                     ? (product.price - (product.price * product.discount / 100)).toFixed(2)
                     : product.price;
-                console.log(`Slika za proizvod ${product.name} učitana`);
             } catch (err) {
                 console.error(`Greška pri učitavanju slike za proizvod ${product.name}`, err);
                 products[index].image = "default_image_url";
@@ -246,7 +249,6 @@ async function prod(parametar) {
 
         await Promise.all(imagePromises);
 
-        console.log(products);
         return products;
     } catch (error) {
         console.error("Greška pri preuzimanju podataka:", error);
@@ -256,37 +258,42 @@ async function prod(parametar) {
 
 
 
+
 document.addEventListener("DOMContentLoaded", function () {
     axios.get("/views/partials/accordion.hbs").then((accordionResponse) => {
         Handlebars.registerPartial("accordion", accordionResponse.data);
 
-        axios.get("http://localhost:5000/categories").then((categoriesResponse) => {
-            var categories = categoriesResponse.data;
-            console.log(categories);
+        Promise.all([
+            axios.get("http://localhost:5000/categories"),
+            axios.get("http://localhost:5000/subcategories"),
+        ]).then((categoriesResponse) => {
 
-            var requests = categories.map((category) => {
-                return axios.get(`http://localhost:5000/subcategories?category_id=${category.id}`)
-                    .then((subcategoriesResponse) => {
-                        category.subcategories = subcategoriesResponse.data;
-                    });
-            });
+            var categories = categoriesResponse[0].data;
+            var subCat= categoriesResponse[1].data;
 
-            Promise.all(requests).then(() => {
-                var menuTemplateSource = document.getElementById("menu-template").innerHTML;
-                var menuTemplate = Handlebars.compile(menuTemplateSource);
-                var menuHtml = menuTemplate({ categories });
+            categories.forEach((category) => {
+                category.subcategories = [];
+                subCat.forEach((subCategory) => {
+                    if(subCategory.category_id === category.id) {
+                        category.subcategories.push(subCategory);
+                    }
 
-                document.getElementById("menu").innerHTML = menuHtml;
-            });
-        }).catch((error) => {
-            console.error("Greška prilikom učitavanja kategorija:", error);
-        });
+                })
+
+            })
+
+
+
+            var menuTemplateSource = document.getElementById("menu-template").innerHTML;
+            var menuTemplate = Handlebars.compile(menuTemplateSource);
+            var menuHtml = menuTemplate({ categories });
+
+            document.getElementById("menu").innerHTML = menuHtml;
+        })
+
     }).catch((error) => {
         console.error("Greška prilikom učitavanja partiala:", error);
     });
 });
-
-
-
 
 
