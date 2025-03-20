@@ -1,3 +1,9 @@
+
+<button class="container__side__menu__button" onclick="categories()">
+    <img class="container__side__menu__button__img" src="../public/assets/grid.png" alt="">
+    <p class="container__side__menu__text container__side__menu__text__case">Kupuj po kategoriji</p>
+</button>
+{{#each categories}}
 <button class="container__side__menu__button" onclick="toggleSubcategories('{{this.name}}')">
     <p class="container__side__menu__text">{{this.name}}</p>
     {{#if this.subcategories.length}}
@@ -12,4 +18,4 @@
     {{else}}
         </button>
     {{/if}}
-
+{{/each}}

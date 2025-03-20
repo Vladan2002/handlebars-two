@@ -8,8 +8,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="/styles/main.css">
-    <link rel="stylesheet" href="/styles/test.css">
+    <link rel="stylesheet" href="../public/styles/main.css">
+    <link rel="stylesheet" href="../public/styles/test.css">
 </head>
 <body>
 <div class="navbar">
@@ -78,15 +78,7 @@
     <div class="container__side">
         <div class="container__side__menu" id="menu">
         <script id="menu-template" type="text/x-handlebars-template">
-
-                <button class="container__side__menu__button" onclick="categories()">
-                    <img class="container__side__menu__button__img" src="../assets/grid.png" alt="">
-                    <p class="container__side__menu__text container__side__menu__text__case">Kupuj po kategoriji</p>
-                </button>
-
-                {{#each categories}}
                     {{> accordion}}
-                {{/each}}
         </script>
             </div>
 
@@ -100,8 +92,6 @@
         </div>
         <div class="container__side__ad">
             <img class="container__side__ad__img" src="" alt="">
-
-
         </div>
         <div class="container__side__newsletter">
             <p>
@@ -174,112 +164,18 @@
             </div>
         </div>
 
-        <div class="container__products__shape">
+        <div id="product-content"></div>
 
-
-            <div class="container__products__shape__trapez container__products__shape__trapez--dark">
-                <p class="container__products__shape__text"><i class="fa-solid fa-fire"></i> Vruća ponuda</p></div>
-
-        </div>
-
-
-
-        <div class="container__products__discounts">
-
-
-            <div class="container__products__bar" id="product-list">
-                <div id="loader" class="loader">
-                    <div class="spinner"></div>
-                </div>
-            <script id="product-template" type="text/x-handlebars-template">
-
-                {{#each products}}
-                    {{> card}}
-                {{/each}}
-                 </script>
-                </div>
-
-            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
-
-        </div>
-
-        <div class="container__products__shape">
-
-            <div class="container__products__shape__trapez">
-                <p class="container__products__shape__text"><i class="fa-solid fa-tag fa-rotate-90"></i> AKCIJA - POPUSTI</p>
-            </div>
-
-        </div>
-        <div class="container__products__discounts">
-            <div class="container__products__bar" >
-                <script type="text/x-handlebars-template">
-
-                    {{#each products}}
-                        {{> card}}
-                    {{/each}}
-                 </script>
-            </div>
-
-
-            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
-        </div>
-        <div class="container__products__shape">
-
-            <div class="container__products__shape__trapez">
-                <p class="container__products__shape__text"><i class="fa-solid fa-star"></i> Preporučujemo</p></div>
+        <script id="product-template" type="text/x-handlebars-template">
+            {{#each products}}
+                {{> productsSection}}
+            {{/each}}
+</script>
 
         </div>
 
 
-        <div class="container__products__discounts">
-            <div class="container__products__bar">
-                <script type="text/x-handlebars-template">
 
-                    {{#each products}}
-                        {{> card}}
-                    {{/each}}
-                 </script>
-            </div>
-
-            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
-
-        </div>
-
-        <div class="container__products__shape">
-
-            <div class="container__products__shape__trapez">
-                <p class="container__products__shape__text"><i class="fa-solid fa-heart"></i> Novo u ponudi</p></div>
-
-        </div>
-
-
-        <div class="container__products__discounts">
-            <div class="container__products__bar">
-                {{#each products}}
-                    {{>card}}
-                {{/each}}
-            </div>
-
-            <button class="container__products__discounts__button">Pogledajte sve proizvode iz vruće ponude</button>
-
-        </div>
-
-        <div class="container__products__shape">
-            <div class="container__products__shape__trapez container__products__shape__trapez--yellow">
-                <p class="container__products__shape__text"> <i class="fa-solid fa-sun"></i> Rasprodaja</p></div>
-
-        </div>
-
-
-        <div class="container__products__discounts">
-            <div class="container__products__bar">
-                {{#each products}}
-                    {{>card}}
-                {{/each}}
-            </div>
-            <button  class="container__products__discounts__button container__products__discounts__button--yellow ">Pogledajte sve proizvode iz vruće ponude</button>
-
-        </div>
 
 
         <div class="container__products__search-brand">
@@ -377,6 +273,6 @@
 </div>
 </body>
 
-<script src="../../scripts/skripta.js"></script>
+<script src="../public/scripts/skripta.js"></script>
 </html>
 
