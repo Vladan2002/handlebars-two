@@ -12,30 +12,77 @@
     <script src="../public/scripts/product.js" defer></script>
 </head>
 <body>
+<div id="header-container"></div>
+
 <div id="loader">Učitavanje...</div>
 <div id="product-content"></div>
 
 <script id="product-template" type="text/x-handlebars-template">
-    <div class="glavni">
-        <div class="slider">
-            {{>productSlider productImages}}
-        </div>
-        <div class="main__left__description">
-            {{>productHeader}}
-            {{>productInfo}}
-            {{>productActions}}
 
+    <div class="page-navigation">
+        <span class="page-navigation__text">Naslovna /</span><span class="page-navigation__text">Proizvodi /</span><span class="page-navigation__text">grupa robe</span>
+    </div>
+    <div class="main">
+        <div class="main__left">
+            <div class="glavni">
+                <div class="slider">
+                    {{>productSlider productImages}}
+                </div>
+                <div class="main__left__description">
+                    {{>productHeader}}
+                    {{>productInfo}}
+                    {{>productActions}}
+
+
+
+                </div>
+
+            </div>
+
+            {{>productTabs}}
+            <div class="main__left__similar">
+                <span class="main__left__similar__text">Slični proizvodi</span>
+                <div class="main__left__similar__line"></div>
+            </div>
             <div class="container__products__discounts">
                 <div class="container__products__bar">
                     {{#each relatedProducts}}
                         {{>card}}
                     {{/each}}
                 </div>
+            </div>
+        </div>
 
+        <div class="main__right">
+            <video class="main__right__video" width="100%" height="auto" controls>
+                <source src="src/assets/6982055-hd_1920_1080_30fps.mp4" type="video/mp4">
+            </video>
+            <video class="main__right__video" width="100%" height="auto" controls>
+                <source src="src/assets/6982055-hd_1920_1080_30fps.mp4" type="video/mp4">
+            </video>
+
+            <div class="container__side__newsletter  main__right__newsletter-product">
+                <p>
+                    <i class="fa-solid fa-envelope"></i>
+                    Prijavi se na newsletter
+                </p>
+                <input class="container__side__newsletter__input" type="text" placeholder="Ime i prezime">
+                <input class="container__side__newsletter__input" type="text" placeholder="Email">
+                <button class="container__side__button-blue">Prijavi se</button>
             </div>
         </div>
     </div>
-    {{>productTabs}}
+
 </script>
+
+
+<div id="footer-container"></div>
 </body>
 </html>
+
+
+
+
+
+
+

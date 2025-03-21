@@ -1,18 +1,24 @@
 <div class="slider__container" id="slider-container">
-    {{#each this    }}
+    {{#each this }}
         <img class="slider__img" src="{{this.source}}" alt="Slika proizvoda">
     {{/each}}
 </div>
 
 <div class="slider__pager">
-    <button class="slider__controls" id="prev-slide">❮</button>
-    <div id="bx-pager" class="slider__thumbnails">
-        {{#each this}}
-            <img class="slider__thumbnail {{#if @first}}slider__thumbnail--active{{/if}}"
-                 src="{{this.source}}"
-                 alt="Thumbnail"
-                 data-index="{{@index}}">
-        {{/each}}
+    <button class="main__left__product__slider__controls" id="prev-slide" >❮</button>
+
+    <div class="main__left__product__slider__pager">
+
+        <div id="bx-pager" class="main__left">
+            {{#each this}}
+                <img class="slider__thumbnail {{#if @first}}slider__thumbnail--active{{/if}}"
+                     src="{{this.source}}"
+                     alt="Thumbnail"
+                     data-index="{{@index}}">
+            {{/each}}
+        </div>
+
     </div>
-    <button class="slider__controls" id="next-slide">❯</button>
+
+    <button class="main__left__product__slider__controls" id="next-slide">❯</button>
 </div>

@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadSection(section, index) {
 
 
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
 
         var products = await prod(section.param);
 
@@ -272,9 +272,9 @@ document.addEventListener("DOMContentLoaded", function () {
             var subCat= categoriesResponse[1].data;
 
             categories.forEach((category) => {
-                category.subcategories = [];
+                category.subcategories=[]
                 subCat.forEach((subCategory) => {
-                    if(subCategory.category_id === category.id) {
+                    if(subCategory.category_id == category.id) {
                         category.subcategories.push(subCategory);
                     }
 
@@ -288,12 +288,82 @@ document.addEventListener("DOMContentLoaded", function () {
             var menuTemplate = Handlebars.compile(menuTemplateSource);
             var menuHtml = menuTemplate({ categories });
 
-            document.getElementById("menu").innerHTML = menuHtml;
+            var k=document.getElementById("container__side").innerHTML
+            document.getElementById("container__side").innerHTML = menuHtml+k;
         })
 
     }).catch((error) => {
         console.error("Greška prilikom učitavanja partiala:", error);
     });
 });
+
+
+
+
+
+
+    function loadPosts() {
+        axios.get("/views/partials/post.hbs")
+            .then((response) => {
+                Handlebars.registerPartial("post", response.data);
+
+                const postTemplateSource = response.data;
+                const postTemplate = Handlebars.compile(postTemplateSource);
+
+                let postsHtml = "";
+                for (let i = 0; i < 2; i++) {
+                    postsHtml += postTemplate();
+                }
+
+                document.getElementById("container__side").innerHTML += postsHtml;
+            })
+            .catch((error) => {
+                console.error("Greška prilikom učitavanja post.hbs:", error);
+            });
+    }
+function loadsSearch() {
+    axios.get("/views/partials/ad.hbs")
+        .then((adResponse) => {
+            Handlebars.registerPartial("ad", adResponse.data);
+            return axios.get("/views/partials/search.hbs");
+        })
+        .then((searchResponse) => {
+            Handlebars.registerPartial("search", searchResponse.data);
+
+            const searchTemplate = Handlebars.compile(searchResponse.data);
+            const searchHtml = searchTemplate();
+
+            document.getElementById("container__side").insertAdjacentHTML("beforeend", searchHtml);
+            loadPosts();
+            axios.get("/views/partials/ad.hbs").then((adResponse) => {
+                const adTemplate = Handlebars.compile(adResponse.data);
+                const adHtml = adTemplate();
+                document.getElementById("container__side").insertAdjacentHTML("beforeend", adHtml);
+
+
+            });
+        })
+        .catch((error) => {
+            console.error("Greška prilikom učitavanja partiala:", error);
+        });
+}
+    loadsSearch();
+
+
+function loadTemplate(url, target, data = {}) {
+    axios.get(url)
+        .then(response => {
+            let template = Handlebars.compile(response.data);
+            document.getElementById(target).innerHTML = template(data);
+        })
+        .catch(error => console.error(`Error loading ${url}:`, error));
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadTemplate("layouts/header.hbs", "header-container");
+    loadTemplate("layouts/footer.hbs", "footer-container");
+    loadTemplate("partials/indexSlider.hbs", "slider");
+});
+
 
 

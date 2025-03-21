@@ -1,16 +1,19 @@
+var urlParams = new URLSearchParams(window.location.search);
+var id = urlParams.get("id");
+
+if (!id) {
+alert()
+window.location.href = 'http://localhost:8080/views/index.html';
+}
+
+
+
 document.addEventListener("DOMContentLoaded", function () {
     var loader = document.getElementById("loader");
     var productContent = document.getElementById("product-content");
     loader.style.display = "block";
 
-    var urlParams = new URLSearchParams(window.location.search);
-    var id = urlParams.get("id");
 
-    if (!id) {
-        productContent.innerHTML = "<p>Nije pronađen ID proizvoda.</p>";
-        loader.style.display = "none";
-        return;
-    }
 
     Promise.all([
         axios.get('/views/partials/productSlider.hbs'),
@@ -196,3 +199,23 @@ function rateStar(rating) {
         stars[i].classList.toggle("checked", i < rating);
     }
 }
+
+
+
+
+function loadTemplate(url, target, data = {}) {
+    axios.get(url)
+        .then(response => {
+            let template = Handlebars.compile(response.data);
+            document.getElementById(target).innerHTML = template(data);
+        })
+        .catch(error => console.error(`Error loading ${url}:`, error));
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadTemplate("layouts/header.hbs", "header-container");
+    loadTemplate("layouts/footer.hbs", "footer-container");
+});
+
+
+
