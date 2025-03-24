@@ -5,132 +5,110 @@ if (!id) {
 alert()
 window.location.href = 'http://localhost:8080/views/index.html';
 }
+async function slider() {
+    try {
+        var productContent = document.getElementById("slider");
+
+        console.log(productContent);
+
+        productContent.innerHTML = `
+            
+                <div class="slider__container skeleton-loader">
+                    <div class="skeleton skeleton__img"></div>
+                </div>
+                <div class="slider__pager">
+                    <button class="main__left__product__slider__controls" id="prev-slide">❮</button>
+                    <div class="main__left__product__slider__pager">
+                        <div id="bx-pager" class="pagerrrr">
+                            <div class="skeleton skeleton__thumbnail"></div>
+                            <div class="skeleton skeleton__thumbnail"></div>
+                            <div class="skeleton skeleton__thumbnail"></div>
+                            <div class="skeleton skeleton__thumbnail"></div>
+                            <div class="skeleton skeleton__thumbnail"></div>
+                            <div class="skeleton skeleton__thumbnail"></div>
+                        </div>
+                    </div>
+                    <button class="main__left__product__slider__controls" id="next-slide">❯</button>
+                </div>
+            
+        `;
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        const imagesResponse = await axios.get(`http://localhost:5000/images?product_id=` + id);
+        const productImages = imagesResponse.data.length > 0 ? imagesResponse.data : [
+            { source: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" }
+        ];
+        const partialResponse = await axios.get('/views/partials/productSlider.hbs');
+        Handlebars.registerPartial('productSlider', partialResponse.data);
+        const templateElement = document.getElementById("slider-template");
+        if (!templateElement) {
+            console.error("Greška: slider-template nije pronađen!");
+            return;
+        }
+        const templateSource = templateElement.innerHTML;
+        console.log(templateSource);
+        const template = Handlebars.compile(templateSource);
+        const generatedHtml = template({ productImages });
+
+        productContent.innerHTML = generatedHtml;
+
+        initializeSlider()
 
 
+    } catch (error) {
+        console.error("Greška prilikom učitavanja podataka:", error);
+    }
+}
 
-document.addEventListener("DOMContentLoaded", function () {
-    var loader = document.getElementById("loader");
-    var productContent = document.getElementById("product-content");
-    loader.style.display = "block";
+slider();
 
+async function description() {
+    await new Promise(resolve => setTimeout(resolve, 10000));
+
+    var content = document.getElementById("description");
 
 
     Promise.all([
-        axios.get('/views/partials/productSlider.hbs'),
         axios.get('/views/partials/productHeader.hbs'),
         axios.get('/views/partials/productInfo.hbs'),
-        axios.get('/views/partials/productActions.hbs'),
-        axios.get('/views/partials/productTabs.hbs'),
-        axios.get('/views/partials/card.hbs')
-    ]).then(function (responses) {
-        Handlebars.registerPartial('productSlider', responses[0].data);
-        Handlebars.registerPartial('productHeader', responses[1].data);
-        Handlebars.registerPartial('productInfo', responses[2].data);
-        Handlebars.registerPartial('productActions', responses[3].data);
-        Handlebars.registerPartial('productTabs', responses[4].data);
-        Handlebars.registerPartial('card', responses[5].data);
+        axios.get("http://localhost:5000/products?id=" + id),
+        axios.get("http://localhost:5000/description?product_id=" + id)
+    ])
+        .then((responses) => {
+            Handlebars.registerPartial('productHeader', responses[0].data);
+            Handlebars.registerPartial('productInfo', responses[1].data);
 
-        return Promise.all([
-            axios.get("http://localhost:5000/products?id=" + id),
-            axios.get("http://localhost:5000/images?product_id=" + id),
-            axios.get("http://localhost:5000/description?product_id=" + id)
-        ]);
-    }).then(function (responses) {
-        var productResponse = responses[0].data;
-        var imagesResponse = responses[1].data;
-        var descriptionResponse = responses[2].data;
+            var productResponse = responses[2].data[0];
+            var descResponse = responses[3].data[0];
 
-        var selectedProduct = productResponse[0];
-        var description = descriptionResponse[0];
-        var product = {};
+            var product = {
+                productId: productResponse.id,
+                productName: productResponse.name,
+                newPrice: productResponse.discount > 0
+                    ? (productResponse.price - (productResponse.price * productResponse.discount / 100)).toFixed(2)
+                    : productResponse.price,
+                productSKU: descResponse ? descResponse.SKU : "N/A",
+                productDesc: descResponse && descResponse.product_description
+                    ? descResponse.product_description.split(" | ")
+                    : ["Nema opisa"]
+            };
 
-        product.productId = selectedProduct.id;
-        product.productName = selectedProduct.name;
 
-        if (selectedProduct.discount > 0) {
-            product.newPrice = (selectedProduct.price - (selectedProduct.price * selectedProduct.discount / 100)).toFixed(2);
-        } else {
-            product.newPrice = selectedProduct.price;
-        }
 
-        if (description) {
-            product.productSKU = description.SKU;
-            if (description.product_description) {
-                product.productDesc = description.product_description.split(" | ");
-            } else {
-                product.productDesc = ["Nema opisa"];
-            }
-        } else {
-            product.productSKU = "N/A";
-            product.productDesc = ["Nema opisa"];
-        }
-
-        if (description && description.product_specs) {
-            var specsArray = description.product_specs.split(" | ");
-            var midIndex = Math.ceil(specsArray.length / 2);
-            product.productSpecsLeft = specsArray.slice(0, midIndex);
-            product.productSpecsRight = specsArray.slice(midIndex);
-        } else {
-            product.productSpecsLeft = ["Nema opisa"];
-            product.productSpecsRight = [""];
-        }
-
-        if (imagesResponse.length > 0) {
-            product.productImages = imagesResponse.map(function (image) {
-                return { source: image.source };
-            });
-        } else {
-            product.productImages = [{ source: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" }];
-        }
-
-        return Promise.all([
-            axios.get("http://localhost:5000/products?subcategory_id=" + selectedProduct.subcategory_id),
-            axios.get("http://localhost:5000/images")
-        ]).then(function (responses) {
-            var relatedProducts = responses[0].data;
-            var images = responses[1].data;
-            var temp = -1;
-
-            for (var i = 0; i < relatedProducts.length; i++) {
-                if (relatedProducts[i].id == id) {
-                    temp = i;
-                }
-
-                if (relatedProducts[i].discount > 0) {
-                    relatedProducts[i].newPrice = relatedProducts[i].price - relatedProducts[i].price * relatedProducts[i].discount / 100;
-                } else {
-                    relatedProducts[i].newPrice = relatedProducts[i].price;
-                }
-
-                var productImages = images.filter(function (img) {
-                    return img.product_id === Number(relatedProducts[i].id);
-                });
-
-                if (productImages.length > 0) {
-                    relatedProducts[i].image = productImages[0].source;
-                } else {
-                    relatedProducts[i].image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
-                }
-            }
-
-            if (temp !== -1) {
-                relatedProducts.splice(temp, 1);
-            }
-            product.relatedProducts = relatedProducts.slice(0, 4);
-
-            var templateSource = document.getElementById("product-template").innerHTML;
+            var templateSource = document.getElementById("description-template").innerHTML;
             var template = Handlebars.compile(templateSource);
-            productContent.innerHTML = template(product);
+            content.innerHTML = template(product);
 
-            initializeSlider();
-            loader.style.display = "none";
+        })
+        .catch((error) => {
+            console.error("Greška:", error);
+            content.innerHTML = "<p>Greška pri učitavanju podataka.</p>";
         });
-    }).catch(function (error) {
-        console.error("Greška:", error);
-        productContent.innerHTML = "<p>Greška pri učitavanju proizvoda.</p>";
-        loader.style.display = "none";
-    });
-});
+}
+
+description();
+
 
 function initializeSlider() {
     var sliderContainer = document.getElementById("slider-container");

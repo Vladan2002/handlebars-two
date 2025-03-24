@@ -9,46 +9,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../public/styles/test.css">
     <link rel="stylesheet" href="../public/styles/main.css">
-    <script src="../public/scripts/product.js" defer></script>
 </head>
+
+
 <body>
 <div id="header-container"></div>
 
-<div id="loader">Učitavanje...</div>
-<div id="product-content"></div>
 
-<script id="product-template" type="text/x-handlebars-template">
 
     <div class="page-navigation">
         <span class="page-navigation__text">Naslovna /</span><span class="page-navigation__text">Proizvodi /</span><span class="page-navigation__text">grupa robe</span>
     </div>
     <div class="main">
         <div class="main__left">
-            <div class="glavni">
-                <div class="slider">
-                    {{>productSlider productImages}}
+            <div class="glavni">                    <div class="slider" id="slider">
+            </div>
+
+            <script id="slider-template" type="text/x-handlebars-template">
+
+                        {{>productSlider productImages }}
+
+                </script>
+
+<div class="main__left__description" id="description">
+
+
+    <div class="main__left__description__title">
+        <div class="skeleton skeleton__title"></div>
+        <div class="main__left__description__sub-title">
+            <div class="main__left__description__sub-div">
+                <div class="skeleton skeleton__price"></div>
+            </div>
+            <div class="main__left__description__sub-div">
+                <div class="skeleton skeleton__sku"></div>
+            </div>
+        </div>
+    </div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text"></div>
+    <div class="skeleton skeleton-text"></div>
+
+
                 </div>
-                <div class="main__left__description">
+
+                <script id="description-template" type="text/x-handlebars-template">
                     {{>productHeader}}
                     {{>productInfo}}
-                    {{>productActions}}
-
-
-
-                </div>
+                </script>
 
             </div>
 
-            {{>productTabs}}
             <div class="main__left__similar">
                 <span class="main__left__similar__text">Slični proizvodi</span>
                 <div class="main__left__similar__line"></div>
             </div>
             <div class="container__products__discounts">
                 <div class="container__products__bar">
-                    {{#each relatedProducts}}
-                        {{>card}}
-                    {{/each}}
+
                 </div>
             </div>
         </div>
@@ -73,11 +93,12 @@
         </div>
     </div>
 
-</script>
 
 
 <div id="footer-container"></div>
 </body>
+<script src="../public/scripts/product.js" defer></script>
+
 </html>
 
 

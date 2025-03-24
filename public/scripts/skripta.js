@@ -167,6 +167,8 @@ function plusSlide() {
 }
 
 function minusSlide() {
+
+
     if (slide > 1) {
         slide--;
     } else {
@@ -185,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     var sections = [
         { color: "dark", name: "Vruća ponuda", icon: "fa-solid fa-fire", param: 0, cards: []},
-        { color: "", name: "AKCIJA - POPUSTI", icon: "fa-solid fa-tag fa-rotate-90", param: 1, cards: [], loaderId: "loader-action" },
+        { color: "", name: "AKCIJA - POPUSTI", icon: "fa-solid fa-tag fa-rotate-90", param: 1, cards: [],loaderId:"adasd"},
         { color: "", name: "Preporučujemo", icon: "fa-solid fa-star", param: 2, cards: []},
         { color: "", name: "Novo u ponudi", icon: "fa-solid fa-heart", param: 3, cards: [] },
         { color: "yellow", name: "Rasprodaja", icon: "fa-solid fa-sun", param: 4, cards: []}
@@ -198,7 +200,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadSection(section, index) {
 
 
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 5000));
 
         var products = await prod(section.param);
 
