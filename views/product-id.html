@@ -83,34 +83,16 @@
                             {{>card}}
                         {{/each}}
                         {{else}}
-                        <div class="container__products__bar__card skeleton-card">
-                            <div class="skeleton skeleton-img"></div>
-                            <div class="skeleton skeleton-badge"></div>
-                            <div class="skeleton skeleton-name"></div>
-                            <div class="skeleton skeleton-timer"></div>
-                            <div class="skeleton skeleton-price"></div>
-                        </div>
-                        <div class="container__products__bar__card skeleton-card">
-                            <div class="skeleton skeleton-img"></div>
-                            <div class="skeleton skeleton-badge"></div>
-                            <div class="skeleton skeleton-name"></div>
-                            <div class="skeleton skeleton-timer"></div>
-                            <div class="skeleton skeleton-price"></div>
-                        </div>
-                        <div class="container__products__bar__card skeleton-card">
-                            <div class="skeleton skeleton-img"></div>
-                            <div class="skeleton skeleton-badge"></div>
-                            <div class="skeleton skeleton-name"></div>
-                            <div class="skeleton skeleton-timer"></div>
-                            <div class="skeleton skeleton-price"></div>
-                        </div>
-                        <div class="container__products__bar__card skeleton-card">
-                            <div class="skeleton skeleton-img"></div>
-                            <div class="skeleton skeleton-badge"></div>
-                            <div class="skeleton skeleton-name"></div>
-                            <div class="skeleton skeleton-timer"></div>
-                            <div class="skeleton skeleton-price"></div>
-                        </div>
+                        {{#each temp}}
+                            <div class="container__products__bar__card skeleton-card">
+                                <div class="skeleton skeleton-img"></div>
+                                <div class="skeleton skeleton-badge"></div>
+                                <div class="skeleton skeleton-name"></div>
+                                <div class="skeleton skeleton-timer"></div>
+                                <div class="skeleton skeleton-price"></div>
+                            </div>
+                        {{/each}}
+
                         {{/if}}
 
 

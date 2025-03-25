@@ -239,6 +239,13 @@ tabs()
 async function similarProducts() {
     var content = document.getElementById("discounts-bar");
 
+
+
+
+
+
+
+
     try {
         const [cardTemplate, productResponse] = await Promise.all([
             axios.get('/views/partials/card.hbs'),
@@ -248,12 +255,37 @@ async function similarProducts() {
         Handlebars.registerPartial('card', cardTemplate.data);
         var subcategory = productResponse.data[0].subcategory_id;
         var templateSource = document.getElementById("discounts-template").innerHTML;
-        var template = Handlebars.compile(templateSource);
-        content.innerHTML = template();
+        var temporary={temp:[]}
+        axios.get('http://localhost:5000/products?subcategory_id=' + subcategory)
+            .then(res=>{
+
+                temp=-1;
+                for (let i = 0; i < res.data.length; i++) {
+                    let element = res.data[i];
+
+                    if (element.id == id) {
+                        temp=i;
+                    }
+
+                    console.log(element);
+                    temporary.temp.push(element);
+                }
+
+                if(temp!=-1){
+                    temporary.temp.splice(temporary.temp.indexOf(temp), 1);
+                }
+                temporary.temp=temporary.temp.slice(0,4)
+                var template = Handlebars.compile(templateSource);
+                content.innerHTML = template(temporary);
+            })
+
+
+
+
 
         var response = await axios.get('http://localhost:5000/products?subcategory_id=' + subcategory);
         var similarProducts = response.data;
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, 3000));
         var temp=-1;
         for (var i = 0; i < similarProducts.length; i++) {
             similarProducts[i].newPrice = similarProducts[i].discount > 0
@@ -274,6 +306,7 @@ async function similarProducts() {
             }
         }
         similarProducts.splice(similarProducts.indexOf(similarProducts[temp]), 1);
+        similarProducts=similarProducts.slice(0,4);
         var productsData = { products: similarProducts };
 
         var template = Handlebars.compile(templateSource);
