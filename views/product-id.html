@@ -72,9 +72,52 @@
                 <div class="main__left__similar__line"></div>
             </div>
             <div class="container__products__discounts">
-                <div class="container__products__bar">
+                <div class="container__products__bar" id="discounts-bar">
 
                 </div>
+
+                <script id="discounts-template" type="text/x-handlebars-template">
+
+                    {{#if products}}
+                        {{#each products}}
+                            {{>card}}
+                        {{/each}}
+                        {{else}}
+                        <div class="container__products__bar__card skeleton-card">
+                            <div class="skeleton skeleton-img"></div>
+                            <div class="skeleton skeleton-badge"></div>
+                            <div class="skeleton skeleton-name"></div>
+                            <div class="skeleton skeleton-timer"></div>
+                            <div class="skeleton skeleton-price"></div>
+                        </div>
+                        <div class="container__products__bar__card skeleton-card">
+                            <div class="skeleton skeleton-img"></div>
+                            <div class="skeleton skeleton-badge"></div>
+                            <div class="skeleton skeleton-name"></div>
+                            <div class="skeleton skeleton-timer"></div>
+                            <div class="skeleton skeleton-price"></div>
+                        </div>
+                        <div class="container__products__bar__card skeleton-card">
+                            <div class="skeleton skeleton-img"></div>
+                            <div class="skeleton skeleton-badge"></div>
+                            <div class="skeleton skeleton-name"></div>
+                            <div class="skeleton skeleton-timer"></div>
+                            <div class="skeleton skeleton-price"></div>
+                        </div>
+                        <div class="container__products__bar__card skeleton-card">
+                            <div class="skeleton skeleton-img"></div>
+                            <div class="skeleton skeleton-badge"></div>
+                            <div class="skeleton skeleton-name"></div>
+                            <div class="skeleton skeleton-timer"></div>
+                            <div class="skeleton skeleton-price"></div>
+                        </div>
+                        {{/if}}
+
+
+
+
+                </script>
+
             </div>
         </div>
 

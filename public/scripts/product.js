@@ -236,3 +236,53 @@ async function tabs(){
 tabs()
 
 
+async function similarProducts() {
+    var content = document.getElementById("discounts-bar");
+
+    try {
+        const [cardTemplate, productResponse] = await Promise.all([
+            axios.get('/views/partials/card.hbs'),
+            axios.get("http://localhost:5000/products?id=" + id)
+        ]);
+
+        Handlebars.registerPartial('card', cardTemplate.data);
+        var subcategory = productResponse.data[0].subcategory_id;
+        var templateSource = document.getElementById("discounts-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
+        content.innerHTML = template();
+
+        var response = await axios.get('http://localhost:5000/products?subcategory_id=' + subcategory);
+        var similarProducts = response.data;
+        await new Promise(resolve => setTimeout(resolve, 10000));
+        var temp=-1;
+        for (var i = 0; i < similarProducts.length; i++) {
+            similarProducts[i].newPrice = similarProducts[i].discount > 0
+                ? similarProducts[i].price - (similarProducts[i].price * similarProducts[i].discount / 100)
+                : similarProducts[i].price;
+
+            if (similarProducts[i].id==id){
+                temp=i;
+            }
+            try {
+                var imageResponse = await axios.get('http://localhost:5000/images?product_id=' + similarProducts[i].id + "&_limit=1");
+
+                similarProducts[i].image = imageResponse.data?.[0]?.source ||
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+            } catch (error) {
+                console.error("Greška pri učitavanju slike:", error);
+                similarProducts[i].image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+            }
+        }
+        similarProducts.splice(similarProducts.indexOf(similarProducts[temp]), 1);
+        var productsData = { products: similarProducts };
+
+        var template = Handlebars.compile(templateSource);
+        content.innerHTML = template(productsData);
+
+    } catch (error) {
+        console.error("Greška pri učitavanju proizvoda:", error);
+    }
+}
+
+similarProducts();
+
