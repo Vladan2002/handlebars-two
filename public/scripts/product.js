@@ -32,7 +32,7 @@ async function slider() {
             
         `;
 
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         const imagesResponse = await axios.get(`http://localhost:5000/images?product_id=` + id);
         const productImages = imagesResponse.data.length > 0 ? imagesResponse.data : [
@@ -62,7 +62,7 @@ async function slider() {
 slider();
 
 async function description() {
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     var content = document.getElementById("description");
 
@@ -172,8 +172,10 @@ function rateStar(rating) {
     document.getElementById("rating-value").innerText = rating;
     var stars = document.getElementsByClassName("fa-star");
     for (var i = 0; i < stars.length; i++) {
-        stars[i].classList.toggle("checked", i < rating);
+        stars[i].classList.toggle("main__table__checked", i < rating);
     }
+
+
 }
 
 
@@ -207,7 +209,7 @@ async function tabs(){
         var templateSource = document.getElementById("table-template").innerHTML;
         var template = Handlebars.compile(templateSource);
         content.innerHTML = template();
-        await new Promise(resolve => setTimeout(resolve, 7000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         var product = {
             productSpecsLeft: ["Nema specifikacija"],
@@ -285,7 +287,7 @@ async function similarProducts() {
 
         var response = await axios.get('http://localhost:5000/products?subcategory_id=' + subcategory);
         var similarProducts = response.data;
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         var temp=-1;
         for (var i = 0; i < similarProducts.length; i++) {
             similarProducts[i].newPrice = similarProducts[i].discount > 0
@@ -319,3 +321,26 @@ async function similarProducts() {
 
 similarProducts();
 
+
+
+function rate(event) {
+    event.preventDefault();
+
+    var rating = document.getElementById("rating-value").innerText;
+
+    if (rating == 0) {
+        alert("Molimo vas da izaberete ocenu pre slanja!");
+        return;
+    }
+
+    axios.post('http://localhost:5000/ratings', {
+        rating: rating,
+        product_id: id
+    }).then(function (res) {
+        console.log("Uspešno poslato:", res.data);
+        alert("Hvala na oceni!");
+    }).catch(function (err) {
+        console.error("Greška pri slanju ocene:", err);
+        alert("Došlo je do greške. Pokušajte ponovo.");
+    });
+}
