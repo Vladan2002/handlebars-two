@@ -6,17 +6,44 @@
         <button class="main__table__tabs__button" onclick="openTab(event, 'email')">E-MAIL</button>
     </div>
 
-    <div id="proizvod" class="main__table__content main__table">
+    <div id="proizvod" class="main__table__content main__table main__table--active">
         <div class="main__table__content__info">
             <div class="main__table__content__info__left">
-                {{#each this.productSpecsLeft}}
-                    <p>{{this}}</p>
-                {{/each}}
+
+                {{#if this.productSpecsLeft}}
+                    {{#each this.productSpecsLeft}}
+                        <p>{{this}}</p>
+                    {{/each}}
+                    {{else}}
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text"></div>
+                {{/if}}
+
+
+
+
+
+
             </div>
             <div class="main__table__content__info__right">
+                {{#if this.productSpecsRight}}
                 {{#each this.productSpecsRight}}
                     <p>{{this}}</p>
                 {{/each}}
+            {{else}}
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+            {{/if}}
             </div>
         </div>
     </div>

@@ -9,7 +9,6 @@ async function slider() {
     try {
         var productContent = document.getElementById("slider");
 
-        console.log(productContent);
 
         productContent.innerHTML = `
             
@@ -33,7 +32,7 @@ async function slider() {
             
         `;
 
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 10000));
 
         const imagesResponse = await axios.get(`http://localhost:5000/images?product_id=` + id);
         const productImages = imagesResponse.data.length > 0 ? imagesResponse.data : [
@@ -47,7 +46,6 @@ async function slider() {
             return;
         }
         const templateSource = templateElement.innerHTML;
-        console.log(templateSource);
         const template = Handlebars.compile(templateSource);
         const generatedHtml = template({ productImages });
 
@@ -64,7 +62,7 @@ async function slider() {
 slider();
 
 async function description() {
-    await new Promise(resolve => setTimeout(resolve, 10000));
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     var content = document.getElementById("description");
 
@@ -195,5 +193,46 @@ document.addEventListener("DOMContentLoaded", function () {
     loadTemplate("layouts/footer.hbs", "footer-container");
 });
 
+
+
+async function tabs(){
+
+    var content = document.getElementById("table");
+
+    Promise.all([
+        axios.get('/views/partials/productTabs.hbs'),
+        axios.get("http://localhost:5000/description?product_id=" + id)
+    ]).then(async response => {
+        Handlebars.registerPartial('productTabs', response[0].data);
+        var templateSource = document.getElementById("table-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
+        content.innerHTML = template();
+        await new Promise(resolve => setTimeout(resolve, 7000));
+
+        var product = {
+            productSpecsLeft: ["Nema specifikacija"],
+            productSpecsRight: [""],
+        };
+
+        var specification = response[1].data[0].product_specs.split(" | ");
+        console.log(specification);
+
+        var half = Math.ceil(specification.length / 2);
+        console.log(half);
+
+        if (specification.length > 0) {
+            product.productSpecsLeft = specification.slice(0, half);
+            product.productSpecsRight = specification.splice(half);
+        }
+
+        var templateSource = document.getElementById("table-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
+        content.innerHTML = template(product);
+
+
+    })
+
+}
+tabs()
 
 
