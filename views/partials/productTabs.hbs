@@ -1,9 +1,9 @@
 <div class="main__table">
     <div class="main__table__tabs">
-        <button class="main__table__tabs__button main__table__tabs--active" onclick="openTab(event, 'proizvod')">PROIZVODNA LISTA</button>
-        <button class="main__table__tabs__button" onclick="openTab(event, 'uputstvo')">UPUTSTVO ZA RUKOVANJE</button>
-        <button class="main__table__tabs__button" onclick="openTab(event, 'ocjena')">OCJENA</button>
-        <button class="main__table__tabs__button" onclick="openTab(event, 'email')">E-MAIL</button>
+        <button class="main__table__tabs__button main__table__tabs--active" onclick="openTab(event, 'proizvod',this)">PROIZVODNA LISTA</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'uputstvo',this)">UPUTSTVO ZA RUKOVANJE</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'ocjena',this)">OCJENA</button>
+        <button class="main__table__tabs__button" onclick="openTab(event, 'email',this)">E-MAIL</button>
     </div>
 
     <div id="proizvod" class="main__table__content main__table main__table--active">
@@ -53,6 +53,7 @@
     </div>
 
     <div id="ocjena" class="main__table__content">
+
         <p>Ocijenite ovaj proizvod</p>
         <span class="fa fa-star" onclick="rateStar(1)"></span>
         <span class="fa fa-star" onclick="rateStar(2)"></span>
@@ -60,7 +61,12 @@
         <span class="fa fa-star" onclick="rateStar(4)"></span>
         <span class="fa fa-star" onclick="rateStar(5)"></span>
         <p style="display: none" id="rating-value">0</p>
-        <button type="button" onclick="rate(event)">Pošalji ocjenu</button>
+        <form onsubmit="event.preventDefault(); return false;">
+            <button type="button" onclick="rate(event)">Ocijeni proizvod</button>
+        </form>
+        <div class="overlay" id="popup">
+            <div class="overlay__popup" id="popup-container"></div>
+        </div>
     </div>
 
     <div id="email" class="main__table__content">

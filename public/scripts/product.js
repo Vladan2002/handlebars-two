@@ -80,6 +80,22 @@ async function description() {
             var productResponse = responses[2].data[0];
             var descResponse = responses[3].data[0];
 
+            if (responses[2].data.length==0 && responses[3].data.length==0) {
+                var product = {
+                    productId: "Nema proizvoda",
+                    productName: "Proizvod ne postoji",
+                    newPrice: 0,
+                    productSKU: descResponse ? descResponse.SKU : "N/A",
+                    productDesc: descResponse && descResponse.product_description
+                        ? descResponse.product_description.split(" | ")
+                        : ["Nema opisa"]
+                }
+                var templateSource = document.getElementById("description-template").innerHTML;
+                var template = Handlebars.compile(templateSource);
+                content.innerHTML = template(product);
+                return ;
+
+            }
             var product = {
                 productId: productResponse.id,
                 productName: productResponse.name,
@@ -154,18 +170,22 @@ function decreaseQuantity() {
     }
 }
 
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
+function openTab(evt, tabName,but) {
+    var tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("main__table__content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
+    for (var i = 0; i < tabcontent.length; i++) {
+        if(tabcontent[i].classList.contains("main__table--active")){
+            tabcontent[i].classList.remove("main__table--active");
+        }
     }
     tablinks = document.getElementsByClassName("main__table__tabs__button");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" main__table--active", "");
+    for (var i = 0; i < tablinks.length; i++) {
+        if(tablinks[i].classList.contains("main__table__tabs--active")){
+            tablinks[i].classList.remove("main__table__tabs--active");
+        }
     }
-    document.getElementById(tabName).style.display = "block";
-    evt.currentTarget.className += " main__table--active";
+    document.getElementById(tabName).classList.add("main__table--active");
+    but.classList.add("main__table__tabs--active");
 }
 
 function rateStar(rating) {
@@ -216,17 +236,18 @@ async function tabs(){
             productSpecsRight: [""],
         };
 
-        var specification = response[1].data[0].product_specs.split(" | ");
-        console.log(specification);
+        if(response[1].data.length > 0) {
+        if(response[1].data[0].product_specs) {
+            var specification = response[1].data[0].product_specs.split(" | ");
 
-        var half = Math.ceil(specification.length / 2);
-        console.log(half);
+            var half = Math.ceil(specification.length / 2);
+            console.log(half);
 
-        if (specification.length > 0) {
-            product.productSpecsLeft = specification.slice(0, half);
-            product.productSpecsRight = specification.splice(half);
-        }
-
+            if (specification.length > 0) {
+                product.productSpecsLeft = specification.slice(0, half);
+                product.productSpecsRight = specification.splice(half);
+            }
+        }}
         var templateSource = document.getElementById("table-template").innerHTML;
         var template = Handlebars.compile(templateSource);
         content.innerHTML = template(product);
@@ -240,13 +261,7 @@ tabs()
 
 async function similarProducts() {
     var content = document.getElementById("discounts-bar");
-
-
-
-
-
-
-
+    content.style.justifyContent = "flex-start";
 
     try {
         const [cardTemplate, productResponse] = await Promise.all([
@@ -255,12 +270,28 @@ async function similarProducts() {
         ]);
 
         Handlebars.registerPartial('card', cardTemplate.data);
+        if(productResponse.data.length == 0) {
+
+            content.innerHTML = "<div class=\"no-products\">\n" +
+                "    <h2>Nema sličnih proizvoda</h2>\n" +
+                "    <p>Trenutno nemamo slične proizvode za prikaz. Pokušajte kasnije ili provjerite druge kategorije!</p>\n" +
+                "</div>";
+            return;
+
+
+        }
         var subcategory = productResponse.data[0].subcategory_id;
         var templateSource = document.getElementById("discounts-template").innerHTML;
         var temporary={temp:[]}
-        axios.get('http://localhost:5000/products?subcategory_id=' + subcategory)
+        var similarExist=true;
+
+        await axios.get('http://localhost:5000/products?subcategory_id=' + subcategory)
             .then(res=>{
 
+                if(res.data.length == 1){
+                    similarExist=false;
+                    return;
+                }
                 temp=-1;
                 for (let i = 0; i < res.data.length; i++) {
                     let element = res.data[i];
@@ -279,10 +310,19 @@ async function similarProducts() {
                 temporary.temp=temporary.temp.slice(0,4)
                 var template = Handlebars.compile(templateSource);
                 content.innerHTML = template(temporary);
+                document.getElementById("discounts-template").style.justifyContent = "flex-start";
             })
 
 
+        console.log(similarExist)
 
+        if(similarExist==false){
+            content.innerHTML = "<div class=\"no-products\">\n" +
+                "    <h2>Nema sličnih proizvoda</h2>\n" +
+                "    <p>Trenutno nemamo slične proizvode za prikaz. Pokušajte kasnije ili provjerite druge kategorije!</p>\n" +
+                "</div>";
+            return;
+        }
 
 
         var response = await axios.get('http://localhost:5000/products?subcategory_id=' + subcategory);
@@ -329,7 +369,7 @@ function rate(event) {
     var rating = document.getElementById("rating-value").innerText;
 
     if (rating == 0) {
-        alert("Molimo vas da izaberete ocenu pre slanja!");
+        alert("Molimo vas da izaberete ocjenu pre slanja!");
         return;
     }
 
@@ -338,9 +378,25 @@ function rate(event) {
         product_id: id
     }).then(function (res) {
         console.log("Uspešno poslato:", res.data);
-        alert("Hvala na oceni!");
+        alert("Poslato!");
     }).catch(function (err) {
-        console.error("Greška pri slanju ocene:", err);
+        console.error("Greška pri slanju ocjene:", err);
         alert("Došlo je do greške. Pokušajte ponovo.");
     });
 }
+
+
+
+function sideBar() {
+    var content = document.getElementById("right-sidebar");
+    axios.get('/views/partials/videos.hbs').then(function (res) {
+        Handlebars.registerPartial('videos', res.data);
+
+        var templateSource = document.getElementById("videos").innerHTML;
+        var template=Handlebars.compile(templateSource);
+        content.innerHTML = template();
+
+
+    })
+}
+sideBar();

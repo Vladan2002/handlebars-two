@@ -4,9 +4,7 @@ function toggleMenu() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    if (window.location.href.indexOf("localhost:3002/product") === -1) {
-        return;
-    }
+if(window.location.href.includes("http://localhost:8080/views/index.html")){return}
     var sliderContainer = document.getElementById("slider-container");
     var slideImages = document.querySelectorAll(".slider__img");
     var prevButton = document.getElementById("prev-slide");
@@ -136,6 +134,12 @@ function rateStar(rating) {
     }
     document.getElementById("rating-value").textContent = rating;
 }
+document.addEventListener("DOMContentLoaded", function () {
+    loadTemplate("layouts/header.hbs", "header-container");
+    loadTemplate("layouts/footer.hbs", "footer-container");
+    loadTemplate("partials/indexSlider.hbs", "slider");
+
+});
 
 var images = document.querySelectorAll(".container__products__slider__show img");
 var number = images.length;
@@ -200,10 +204,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadSection(section, index) {
 
 
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         var products = await prod(section.param);
+        if (products.length === 0) {
+            sections[index].empty = "jeste";
 
+        } else {
+            sections[index].cards = products;
+        }
+        console.log(sections);
 
 
         sections[index].cards = products;
@@ -225,8 +235,8 @@ async function prod(parametar) {
     if (parametar === 0) url += "?discount_gte=0&_limit=4";
     else if (parametar === 1) url += "?discount_gte=5&_limit=8";
     else if (parametar === 2) url += "?discount_gte=0&_limit=4";
-    else if (parametar === 3) url += "?discount_gte=10&_limit=4";
-    else if (parametar === 4) url += "?discount_gte=40&_limit=4";
+    else if (parametar === 3) url += "?discount_gte=100&_limit=4";
+    else if (parametar === 4) url += "?discount_gte=970&_limit=4";
 
     try {
         const response = await axios.get(url);
@@ -361,11 +371,7 @@ function loadTemplate(url, target, data = {}) {
         .catch(error => console.error(`Error loading ${url}:`, error));
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-    loadTemplate("layouts/header.hbs", "header-container");
-    loadTemplate("layouts/footer.hbs", "footer-container");
-    loadTemplate("partials/indexSlider.hbs", "slider");
-});
+
 
 
 

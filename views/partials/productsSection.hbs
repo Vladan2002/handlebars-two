@@ -8,7 +8,7 @@
 
 <div class="container__products__discounts">
     <div class="container__products__bar" id="hotDeals-container">
-        <div class="skeleton-loader {{#if cards}}loader--hidden{{/if}}" >
+        <div class="skeleton-loader {{#if cards}}loader--hidden{{/if}}  {{#if empty}}loader--hidden{{/if}}" >
             <div class="container__products__bar__card skeleton-card">
                 <div class="skeleton skeleton-img"></div>
                 <div class="skeleton skeleton-badge"></div>
@@ -70,9 +70,16 @@
 
         </div>
 
-        {{#each cards}}
-            {{> card}}
-        {{/each}}
+        {{#if empty}}
+            <div class="no-products">
+                <h2>Nema proizvoda u ovoj sekciji</h2>
+                <p>Trenutno nemamo proizvode koji odgovaraju sekciji {{name}}. Pokušajte kasnije</p>
+            </div>
+        {{else}}
+            {{#each cards}}
+                {{> card}}
+            {{/each}}
+        {{/if}}
     </div>
     <button class="container__products__discounts__button container__products__discounts__button--{{color}}">
         Pogledajte sve proizvode iz vruće ponude

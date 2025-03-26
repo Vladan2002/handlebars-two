@@ -22,7 +22,8 @@
     </div>
     <div class="main">
         <div class="main__left">
-            <div class="glavni">                    <div class="slider" id="slider">
+            <div class="glavni">
+                <div class="slider" id="slider">
             </div>
 
             <script id="slider-template" type="text/x-handlebars-template">
@@ -103,26 +104,22 @@
             </div>
         </div>
 
-        <div class="main__right">
-            <video class="main__right__video" width="100%" height="auto" controls>
-                <source src="src/assets/6982055-hd_1920_1080_30fps.mp4" type="video/mp4">
-            </video>
-            <video class="main__right__video" width="100%" height="auto" controls>
-                <source src="src/assets/6982055-hd_1920_1080_30fps.mp4" type="video/mp4">
-            </video>
+        <div class="main__right" id="right-sidebar">
 
-            <div class="container__side__newsletter  main__right__newsletter-product">
-                <p>
-                    <i class="fa-solid fa-envelope"></i>
-                    Prijavi se na newsletter
-                </p>
-                <input class="container__side__newsletter__input" type="text" placeholder="Ime i prezime">
-                <input class="container__side__newsletter__input" type="text" placeholder="Email">
-                <button class="container__side__button-blue">Prijavi se</button>
-            </div>
+
         </div>
+
+        <script id="videos" type="text/x-handlebars-template">
+            {{>videos}}
+        </script>
+
     </div>
 
+<div class="overlay" id="popup">
+    <div class="overlay__popup" id="popup-container">
+
+    </div>
+</div>
 
 
 <div id="footer-container"></div>
