@@ -14,7 +14,27 @@
 
 <body>
 <div id="header-container"></div>
+<div class="overlay" id="popup">
+    <div class="overlay__popup" id="popup-container">
+        <button type="button" onclick="closePopup()">X</button>
+        <br>
 
+        <label>Ime proizvoda</label> <br>
+        <input type="text" placeholder="Name" id="product-name"> <br>
+        <label>Popust</label> <br>
+        <input type="number" min="0" placeholder="Discount" id="product-discount"><br>
+        <label>Price</label><br>
+        <input type="number" min="0" placeholder="Price" id="product-price"><br>
+        <label>Podkategorija</label><br>
+        <select id="product-subcategory">
+            <option value="-1">Izaberi podkategoriju</option>
+        </select><br>
+        <button onclick="add()">Dodaj</button>
+        <p>Hello, Vladan! Cheat code activated!</p>
+
+
+    </div>
+</div>
 
 
     <div class="page-navigation">
@@ -115,11 +135,6 @@
 
     </div>
 
-<div class="overlay" id="popup">
-    <div class="overlay__popup" id="popup-container">
-
-    </div>
-</div>
 
 
 <div id="footer-container"></div>

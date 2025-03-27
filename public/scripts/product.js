@@ -2,7 +2,6 @@ var urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get("id");
 
 if (!id) {
-alert()
 window.location.href = 'http://localhost:8080/views/index.html';
 }
 async function slider() {
@@ -400,3 +399,87 @@ function sideBar() {
     })
 }
 sideBar();
+
+function subcategories(){
+    var select=document.getElementById('product-subcategory');
+    axios.get('http://localhost:5000/subcategories').then(function (res) {
+        console.log(res.data);
+        res.data.forEach(function (item) {
+            var option = document.createElement("option");
+            option.value = item.id;
+            option.text = item.name;
+            console.log(item.name);
+            select.appendChild(option);
+
+        })
+    })
+}
+subcategories();
+
+function add() {
+    if(document.getElementById("product-subcategory").value==-1){
+        alert("odaberi podkategoriju")
+        return;
+    }
+    axios.post('http://localhost:5000/products', {
+        name: document.getElementById("product-name").value,
+        price: parseFloat(document.getElementById("product-price").value),
+        discount: parseFloat(document.getElementById("product-discount").value) || 0,
+        subcategory_id: parseInt(document.getElementById("product-subcategory").value)
+    }).then((res) => {
+        console.log("Status:", res.status);
+        console.log("Response body:", res.data);
+    }).catch((err) => {
+        console.error("Error:", err);
+    });
+}
+
+
+
+
+
+
+
+function showPopup() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "flex";
+
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    var typedString = "";
+
+    document.addEventListener("keypress", (event) => {
+        var char = event.key.toLowerCase();
+
+        typedString += char;
+
+        if (typedString.length > 10) {
+            typedString = typedString.slice(-10);
+        }
+
+        if (typedString.endsWith("vladan")) {
+            var vladanEvent = new CustomEvent("vladanTyped");
+            document.dispatchEvent(vladanEvent);
+            typedString = "";
+        }
+    });
+
+    document.addEventListener("vladanTyped", () => {
+        showPopup();
+    });
+});
+
+
+
+function closePopup() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
+
+}
+
+
+function kartica(id) {
+    window.location.assign( `http://localhost:8080/views/product-id.html?id=${id}`);
+}

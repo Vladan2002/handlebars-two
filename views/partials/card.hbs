@@ -1,5 +1,5 @@
-<div class="container__products__bar__card">
-    <a href="http://localhost:8080/views/product-id.html?id={{this.id}}" style="text-decoration: none; color: black;">
+<div class="container__products__bar__card" onclick="kartica({{this.id}})">
+
         <div class="container__products__bar__img-wrapper">
             <img src="{{this.image}}" alt="{{this.name}}" class="container__products__bar__img">
             {{#if this.discount}}
@@ -18,5 +18,5 @@
             {{/if}}
             <span class="container__products__bar__price bar__price--new">${{this.newPrice}}</span>
         </div>
-    </a>
+
 </div>

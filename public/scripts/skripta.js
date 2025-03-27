@@ -3,6 +3,8 @@ function toggleMenu() {
     menu.classList.toggle("navbar__small__select--active");
 }
 
+
+
 document.addEventListener("DOMContentLoaded", function () {
 if(window.location.href.includes("http://localhost:8080/views/index.html")){return}
     var sliderContainer = document.getElementById("slider-container");
@@ -314,6 +316,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
     function loadPosts() {
         axios.get("/views/partials/post.hbs")
             .then((response) => {
@@ -371,7 +375,14 @@ function loadTemplate(url, target, data = {}) {
         .catch(error => console.error(`Error loading ${url}:`, error));
 }
 
+function kartica(id) {
+    //window.location.href = `http://localhost:8080/views/product-id.html?id=${id}`;
+    //window.location.assign( `http://localhost:8080/views/product-id.html?id=${id}`);
+    //location = `http://localhost:8080/views/product-id.html?id=${id}`;
+    //document.location = `http://localhost:8080/views/product-id.html?id=${id}`;
+    fetch(`http://localhost:8080/views/product-id.html?id=${id}`)
+        .then(response => {
+            window.location.href = response.url;
+        });
 
-
-
-
+}
