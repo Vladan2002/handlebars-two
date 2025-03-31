@@ -14,89 +14,158 @@
 <body>
 <div id="header-container"></div>
 
-<div class="container">
-    <div class="container__side" id="container__side">
-        <script id="menu-template" type="text/x-handlebars-template">
-            <div class="container__side__menu" id="menu">
-                    {{> accordion}}
-            </div>
-        </script>
+<div class="container" id="mainContainer">
+    <div class="container__side" id="container__side"></div>
 
 
-
-
-
-    </div>
-
-
-    <div class="container__products">
-        <div class="container__products__slider" id="slider">
-            </div>
+    <div class="container__products"><div class="container__products__slider" id="slider"></div>
 
 
         <div id="product-content"></div>
 
-        <script id="product-template" type="text/x-handlebars-template">
-            {{#each products}}
-                {{> productsSection}}
-            {{/each}}
-        </script>
 
-        </div>
-
-
-
-
-
-        <div class="container__products__search-brand">
-            <i class="fa-solid fa-envelope"></i>
-            Pretraži po brendu
-            <input class="container__products__search-brand__input" type="text">
-            <i class="fa-solid fa-magnifying-glass container__products__search-brand__magnify"></i>
-
-        </div>
-        <div class="container__products__newsletter">
-            <p>
-                <i class="fa-solid fa-envelope"></i>
-                prijavi se na newsletter
-            </p>
-            <input class="container__products__newsletter__input" type="text" placeholder="Ime i prezime">
-            <input class="container__products__newsletter__input" type="text" placeholder="Email">
-            <button class="container__side__button-blue">Prijavi se</button>
-        </div>
-
-        <div class="container__products__makita-post">
-            <div class="container__products__makita-post__img-wrap">
-                <img class="container__products__makita-post__img"  src="" alt="">
-            </div>
-            <h5 class="container__products__makita-post__title">Lorem ipsum dolor sit amet.</h5>
-            <p>consectetur adipisicing elit.
-                Aperiam commodi cumque dicta, dignissimos,
-                dolores eveniet ex ipsa ipsum itaque maxime modi nemo numquam optio placeat quasi quis repellendus
-                reprehenderit repudiandae.</p>
-            <button class="container__side__button-blue">Opširnije</button>
-        </div>
-        <div class="container__products__makita-post">
-            <div class="container__products__makita-post__img-wrap">
-                <img class="container__products__makita-post__img"  src="" alt="">
-            </div>
-            <h5 class="container__products__makita-post__title">Lorem ipsum dolor sit amet.</h5>
-            <p>consectetur adipisicing elit.
-                Aperiam commodi cumque dicta, dignissimos,
-                dolores eveniet ex ipsa ipsum itaque maxime modi nemo numquam optio placeat quasi quis repellendus
-                reprehenderit repudiandae.</p>
-            <button class="container__side__button-blue" >Opširnije</button>
-        </div>
     </div>
 
 
-</div>
+
+
+
+
+    </div>
+
+
+
 
 
 <div id="footer-container"></div>
 
 </body>
 
+<script id="menu-template" type="text/x-handlebars-template">
+    <div class="container__side__menu" id="menu">
+        {{> accordion}}
+    </div>
+</script>
+
+<script id="product-template" type="text/x-handlebars-template">
+    {{#each products}}
+        {{> productsSection}}
+    {{/each}}
+</script>
+
+<script id="seeAll-template" type="text/x-handlebars-template">
+    <div class="container__products__discounts">
+    <div class="container__products__bar">
+        {{#if skeleton}}
+
+            <div class="skeleton-loader" >
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+
+                    <div class="container__products__bar__card skeleton-card">
+                        <div class="skeleton skeleton-img"></div>
+                        <div class="skeleton skeleton-badge"></div>
+                        <div class="skeleton skeleton-name"></div>
+                        <div class="skeleton skeleton-timer"></div>
+                        <div class="skeleton skeleton-price"></div>
+                    </div>
+                    <div class="container__products__bar__card skeleton-card">
+                        <div class="skeleton skeleton-img"></div>
+                        <div class="skeleton skeleton-badge"></div>
+                        <div class="skeleton skeleton-name"></div>
+                        <div class="skeleton skeleton-timer"></div>
+                        <div class="skeleton skeleton-price"></div>
+                    </div>
+                    <div class="container__products__bar__card skeleton-card">
+                        <div class="skeleton skeleton-img"></div>
+                        <div class="skeleton skeleton-badge"></div>
+                        <div class="skeleton skeleton-name"></div>
+                        <div class="skeleton skeleton-timer"></div>
+                        <div class="skeleton skeleton-price"></div>
+                    </div>
+                    <div class="container__products__bar__card skeleton-card">
+                        <div class="skeleton skeleton-img"></div>
+                        <div class="skeleton skeleton-badge"></div>
+                        <div class="skeleton skeleton-name"></div>
+                        <div class="skeleton skeleton-timer"></div>
+                        <div class="skeleton skeleton-price"></div>
+                    </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+                <div class="container__products__bar__card skeleton-card">
+                    <div class="skeleton skeleton-img"></div>
+                    <div class="skeleton skeleton-badge"></div>
+                    <div class="skeleton skeleton-name"></div>
+                    <div class="skeleton skeleton-timer"></div>
+                    <div class="skeleton skeleton-price"></div>
+                </div>
+
+
+            </div>
+
+        {{/if}}
+
+    {{#each products}}
+        {{> card}}
+    {{/each}}
+    </div>
+        {{#if name}}
+            <div class="no-products">
+                       <h2>Nema proizvoda u ovoj sekciji</h2>
+                      <p>Trenutno nemamo proizvode. Pokušajte kasnije</p>
+           </div>
+        {{/if}}
+
+        <button id="backButton" class="container__side__button-blue" onclick="handleBackClick()">Back</button>
+    </div>
+    </script>
+
 <script src="../public/scripts/skripta.js"></script>
+<script src="../public/scripts/nekeFunkcije.js"></script>
 </html>
 

@@ -1,129 +1,3 @@
-function toggleMenu() {
-    var menu = document.getElementById("select-menu");
-    menu.classList.toggle("navbar__small__select--active");
-}
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-if(window.location.href.includes("http://localhost:8080/views/index.html")){return}
-    var sliderContainer = document.getElementById("slider-container");
-    var slideImages = document.querySelectorAll(".slider__img");
-    var prevButton = document.getElementById("prev-slide");
-    var nextButton = document.getElementById("next-slide");
-    var thumbnails = document.querySelectorAll(".slider__thumbnail");
-
-    var currentIndex = 0;
-    var totalSlides = slideImages.length;
-
-    function updateSlider() {
-        var offset = -currentIndex * 100;
-        sliderContainer.style.transform = "translateX(" + offset + "%)";
-
-        var allThumbnails = document.querySelectorAll(".slider__thumbnail");
-        for (var i = 0; i < allThumbnails.length; i++) {
-            if (i === currentIndex) {
-                allThumbnails[i].classList.add("slider__thumbnail--active");
-            } else {
-                allThumbnails[i].classList.remove("slider__thumbnail--active");
-            }
-        }
-    }
-
-    for (var i = 0; i < thumbnails.length; i++) {
-        (function (i) {
-            thumbnails[i].addEventListener("click", function () {
-                currentIndex = parseInt(thumbnails[i].dataset.index, 10);
-                updateSlider();
-            });
-        })(i);
-    }
-
-    nextButton.addEventListener("click", function () {
-        currentIndex = (currentIndex + 1) % totalSlides;
-        updateSlider();
-    });
-
-    prevButton.addEventListener("click", function () {
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
-        updateSlider();
-    });
-
-    updateSlider();
-});
-
-function categories() {
-    var buttons = document.querySelectorAll("#menu button");
-    var control = 0;
-
-    if (buttons[1].classList.contains("container__side__menu__button--deactivate-button")) {
-        control = 1;
-    }
-
-    for (var i = 1; i < buttons.length; i++) {
-        if (control === 1) {
-            if (buttons[i].hasAttribute("data-category")) {
-                continue;
-            }
-            buttons[i].classList.remove("container__side__menu__button--deactivate-button");
-        } else {
-            buttons[i].classList.add("container__side__menu__button--deactivate-button");
-        }
-    }
-}
-
-function navbar(element) {
-    var a = document.querySelectorAll("#select-menu a");
-    for (var i = 0; i < a.length; i++) {
-        if (a[i].classList.contains("navbar__small__select__button--active")) {
-            a[i].classList.remove("navbar__small__select__button--active");
-        }
-    }
-    element.classList.add("navbar__small__select__button--active");
-}
-
-function toggleSubcategories(category) {
-    var subcategories = document.querySelectorAll('.container__side__menu__button--subcategory[data-category="' + category + '"]');
-
-    for (var i = 0; i < subcategories.length; i++) {
-        subcategories[i].classList.toggle('container__side__menu__button--deactivate-button');
-    }
-}
-
-function increaseQuantity() {
-    var input = document.getElementById("quantity");
-    var value = parseInt(input.value, 10);
-    if (isNaN(value)) {
-        value = 1;
-    } else {
-        value += 1;
-    }
-    input.value = value < 10 ? "0" + value : value;
-}
-
-function decreaseQuantity() {
-    var input = document.getElementById("quantity");
-    var value = parseInt(input.value, 10);
-    if (value > 1) {
-        value -= 1;
-    }
-    input.value = value < 10 ? "0" + value : value;
-}
-
-function openTab(event, tabName) {
-    var tabContent = document.getElementsByClassName("main__table__content");
-    for (var i = 0; i < tabContent.length; i++) {
-        tabContent[i].classList.remove("main__table--active");
-    }
-
-    var tabButtons = document.getElementsByClassName("main__table__tabs__button");
-    for (var i = 0; i < tabButtons.length; i++) {
-        tabButtons[i].classList.remove("main__table__tabs--active");
-    }
-
-    document.getElementById(tabName).classList.add("main__table--active");
-    event.currentTarget.classList.add("main__table__tabs--active");
-}
 
 function rateStar(rating) {
     var stars = document.querySelectorAll(".fa-star");
@@ -143,47 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-var images = document.querySelectorAll(".container__products__slider__show img");
-var number = images.length;
-var slide = 1;
-var progress = 100 / number;
-var bar = document.getElementById("progress");
-
-function slider(prev) {
-    if (prev) {
-        if (slide === number) {
-            images[0].classList.remove("container__products__slider__show__img--active");
-        } else {
-            images[slide].classList.remove("container__products__slider__show__img--active");
-        }
-    } else {
-        if (slide > 1) {
-            images[slide - 2].classList.remove("container__products__slider__show__img--active");
-        } else {
-            images[number - 1].classList.remove("container__products__slider__show__img--active");
-        }
-    }
-    images[slide - 1].classList.add("container__products__slider__show__img--active");
-    bar.style.width = (slide * progress) + "%";
-}
-
-function plusSlide() {
-    slide = (slide % number) + 1;
-    slider(false);
-}
-
-function minusSlide() {
-
-
-    if (slide > 1) {
-        slide--;
-    } else {
-        slide = number;
-    }
-    slider(true);
-}
-
-document.addEventListener("DOMContentLoaded", async function () {
+async function sections () {
     const [productsResponse, cardResponse] = await Promise.all([
         axios.get('/views/partials/productsSection.hbs'),
         axios.get('/views/partials/card.hbs')
@@ -206,7 +40,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function loadSection(section, index) {
 
 
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 0));
 
         var products = await prod(section.param);
         if (products.length === 0) {
@@ -229,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     for (var i = 0; i < sections.length; i++) {
         await loadSection(sections[i], i);
     }
-});
+};
 async function prod(parametar) {
     let url = "http://localhost:5000/products";
 
@@ -242,6 +76,7 @@ async function prod(parametar) {
 
     try {
         const response = await axios.get(url);
+        if (!response.data || response.data.length == 0) {return [];}
         var products = response.data;
 
         var imagePromises = products.map(async (product, index) => {
@@ -269,6 +104,7 @@ async function prod(parametar) {
         return [];
     }
 }
+sections();
 
 
 
@@ -384,5 +220,96 @@ function kartica(id) {
         .then(response => {
             window.location.href = response.url;
         });
+
+}
+
+function bottomSomething(){
+    var content=document.getElementById("mainContainer");
+
+    axios.get("/views/partials/bottomSomething.hbs")
+        .then(response => {
+            Handlebars.registerPartial('bottomSomething', response.data);
+
+            var template=Handlebars.compile(response.data);
+            console.log(template);
+            content.innerHTML += template();
+        })
+
+}
+bottomSomething();
+
+
+
+async function seeAll(parametar) {
+    document.getElementById("slider").innerHTML = "";
+    document.getElementById("product-content").innerHTML = "";
+    document.getElementById("product-content").style.marginTop = "20px";
+
+    try {
+        var partial = await axios.get("/views/partials/card.hbs");
+        Handlebars.registerPartial("card", partial.data);
+
+        let url = "http://localhost:5000/products";
+
+        var templateSource = document.getElementById("seeAll-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
+        var skeleton="nesto"
+        document.getElementById("product-content").innerHTML = template({skeleton});
+
+        document.getElementById("backButton").style.display = "none";
+
+        await new Promise(resolve => setTimeout(resolve, 6000));
+
+        if (parametar === 0) url += "?discount_gte=0";
+        else if (parametar === 1) url += "?discount_gte=5";
+        else if (parametar === 2) url += "?discount_gte=0";
+        else if (parametar === 3) url += "?discount_gte=50";
+        else if (parametar === 4) url += "?discount_gte=970";
+
+        const response = await axios.get(url);
+
+        if (!response.data || response.data.length === 0) {
+            console.warn("Nema proizvoda za prikaz.");
+            var templateSource = document.getElementById("seeAll-template").innerHTML;
+            var template = Handlebars.compile(templateSource);
+            var name="nesto"
+            document.getElementById("product-content").innerHTML = template({name});
+            return;
+        }
+
+
+        var products = response.data;
+        console.log(products);
+
+        await Promise.all(products.map(async (product, index) => {
+            try {
+              var imagesUrl=`http://localhost:5000/images?product_id=${product.id}&_limit=1`
+                var imageResponse = await axios.get(imagesUrl);
+                products[index].image = imageResponse.data[0]?.source ||
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+
+                products[index].newPrice = product.discount > 0
+                    ? (product.price - (product.price * product.discount / 100)).toFixed(2)
+                    : product.price;
+            } catch (err) {
+                console.error(`Greška pri učitavanju slike za proizvod ${product.name}`, err);
+                products[index].image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+            }
+        }));
+
+        var templateSource = document.getElementById("seeAll-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
+
+        document.getElementById("product-content").innerHTML = template({ products });
+
+    } catch (error) {
+        console.error("Greška prilikom učitavanja proizvoda:", error);
+    }
+}
+
+
+function handleBackClick() {
+    loadTemplate("partials/indexSlider.hbs", "slider");
+    sections();
 
 }

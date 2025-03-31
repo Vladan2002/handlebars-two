@@ -1,5 +1,6 @@
 var urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get("id");
+console.log(id);
 
 if (!id) {
 window.location.href = 'http://localhost:8080/views/index.html';
@@ -33,7 +34,11 @@ async function slider() {
 
         await new Promise(resolve => setTimeout(resolve, 1000));
 
-        const imagesResponse = await axios.get(`http://localhost:5000/images?product_id=` + id);
+        var imagesUrl=`http://localhost:5000/images?product_id=${id}`
+
+
+        const imagesResponse = await axios.get(imagesUrl);
+        console.log(imagesResponse.data);
         const productImages = imagesResponse.data.length > 0 ? imagesResponse.data : [
             { source: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" }
         ];
@@ -416,11 +421,24 @@ function subcategories(){
 }
 subcategories();
 
-function add() {
+async function add() {
     if(document.getElementById("product-subcategory").value==-1){
         alert("odaberi podkategoriju")
         return;
     }
+    var sku=document.getElementById("SKU").value;
+
+    var response=await axios.get("http://localhost:5000/description?SKU="+sku)
+
+    console.log(response.data);
+    console.log(response.data.length);
+    if(response.data.length>0){
+        alert("crklo")
+        return;
+    }
+
+    alert("Poslato!");
+
     axios.post('http://localhost:5000/products', {
         name: document.getElementById("product-name").value,
         price: parseFloat(document.getElementById("product-price").value),
@@ -443,8 +461,6 @@ function add() {
 function showPopup() {
     var popup = document.getElementById("popup");
     popup.style.display = "flex";
-
-
 }
 
 document.addEventListener("DOMContentLoaded", () => {
