@@ -21,26 +21,37 @@
         </div>
         <br>
 
-        <form onsubmit="add()">
-        <label>Ime proizvoda</label> <br>
-        <input type="text" placeholder="Name" id="product-name" required> <br>
-        <label>Popust</label> <br>
-        <input type="number" min="0" placeholder="Discount" id="product-discount" required><br>
-        <label>Price</label><br>
-        <input type="number" min="0" placeholder="Price" id="product-price" required><br>
-            <label>Šifra</label><br>
-        <input type="text" placeholder="Price" id="SKU" required><br>
-        <label>Podkategorija</label><br>
-        <select id="product-subcategory" required>
+
+        <label>Ime proizvoda</label>
+        <input type="text" placeholder="Name" id="product-name" >
+        <label>Popust</label>
+        <input type="number" min="0" placeholder="Discount" id="product-discount" >
+        <label>Price</label>
+        <input type="number" min="0" placeholder="Price" id="product-price" >
+            <label>Šifra</label>
+        <input type="text" placeholder="SKU" id="SKU" >
+        <label>Podkategorija</label>
+        <select id="product-subcategory" >
             <option value="" selected disabled>Izaberi podkategoriju</option>
-        </select><br>
-            <button type="submit">Dodaj</button>
-        </form>
+        </select>
+            <label>Opis</label>
+            <textarea placeholder="Description" id="product-description" ></textarea>
+            <label>Specs</label>
+            <textarea placeholder="Specification" id="product-specs" ></textarea>
+            <label>Slike proizvoda</label>
+            <input type="file" id="product-images" multiple accept="image/*" onchange="previewImages()">
+
+            <div id="image-preview" class="image_preview"></div>
+
+            <button type="submit" onclick="add()">Dodaj</button>
+
         <p>Hello, Vladan! Cheat code activated!</p>
+
 
 
     </div>
 </div>
+
 
 
     <div class="page-navigation">

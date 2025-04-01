@@ -1,15 +1,5 @@
+var database="http://localhost:5000/"
 
-function rateStar(rating) {
-    var stars = document.querySelectorAll(".fa-star");
-    for (var i = 0; i < stars.length; i++) {
-        if (i < rating) {
-            stars[i].classList.add("main__table__checked");
-        } else {
-            stars[i].classList.remove("main__table__checked");
-        }
-    }
-    document.getElementById("rating-value").textContent = rating;
-}
 document.addEventListener("DOMContentLoaded", function () {
     loadTemplate("layouts/header.hbs", "header-container");
     loadTemplate("layouts/footer.hbs", "footer-container");
@@ -64,9 +54,9 @@ async function sections () {
         await loadSection(sections[i], i);
     }
 };
-async function prod(parametar) {
-    let url = "http://localhost:5000/products";
 
+async function prod(parametar) {
+    let url = database+"products";
 
     if (parametar === 0) url += "?discount_gte=0&_limit=4";
     else if (parametar === 1) url += "?discount_gte=5&_limit=8";
@@ -76,35 +66,38 @@ async function prod(parametar) {
 
     try {
         const response = await axios.get(url);
-        if (!response.data || response.data.length == 0) {return [];}
-        var products = response.data;
+        if (!response.data || response.data.length === 0) return [];
 
-        var imagePromises = products.map(async (product, index) => {
-
-            try {
-                var imageResponse = await axios.get(`http://localhost:5000/images?product_id=${product.id}&_limit=1`);
+        let products = response.data;
 
 
-                products[index].image = imageResponse.data[0]?.source ||   "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
-            products[index].newPrice = product.discount > 0
-                    ? (product.price - (product.price * product.discount / 100)).toFixed(2)
-                    : product.price;
-            } catch (err) {
-                console.error(`Greška pri učitavanju slike za proizvod ${product.name}`, err);
-                products[index].image = "default_image_url";
-            }
-        });
-
-
-        await Promise.all(imagePromises);
+        await Promise.all(products.map(fetchProductImageAndPrice));
 
         return products;
     } catch (error) {
-        console.error("Greška pri preuzimanju podataka:", error);
+        console.error("Greška prilikom učitavanja proizvoda:", error);
         return [];
     }
 }
 sections();
+
+
+async function fetchProductImageAndPrice(product) {
+    try {
+        let imageResponse = await axios.get(`${database}images?product_id=${product.id}&_limit=1`);
+
+        product.image = imageResponse.data[0]?.source ||
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+
+        product.newPrice = product.discount > 0
+            ? (product.price - (product.price * product.discount / 100)).toFixed(2)
+            : product.price;
+
+    } catch (err) {
+        console.error(`Greška pri učitavanju slike za proizvod ${product.name}`, err);
+        product.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+    }
+}
 
 
 
@@ -114,8 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
         Handlebars.registerPartial("accordion", accordionResponse.data);
 
         Promise.all([
-            axios.get("http://localhost:5000/categories"),
-            axios.get("http://localhost:5000/subcategories"),
+            axios.get(`${database}categories`),
+            axios.get(`${database}subcategories`),
         ]).then((categoriesResponse) => {
 
             var categories = categoriesResponse[0].data;
@@ -146,13 +139,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Greška prilikom učitavanja partiala:", error);
     });
 });
-
-
-
-
-
-
-
 
     function loadPosts() {
         axios.get("/views/partials/post.hbs")
@@ -249,7 +235,7 @@ async function seeAll(parametar) {
         var partial = await axios.get("/views/partials/card.hbs");
         Handlebars.registerPartial("card", partial.data);
 
-        let url = "http://localhost:5000/products";
+        let url = `${database}products`;
 
         var templateSource = document.getElementById("seeAll-template").innerHTML;
         var template = Handlebars.compile(templateSource);
@@ -258,12 +244,12 @@ async function seeAll(parametar) {
 
         document.getElementById("backButton").style.display = "none";
 
-        await new Promise(resolve => setTimeout(resolve, 6000));
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
-        if (parametar === 0) url += "?discount_gte=0";
+        if (parametar === 0) url += "?discount_gte=1";
         else if (parametar === 1) url += "?discount_gte=5";
         else if (parametar === 2) url += "?discount_gte=0";
-        else if (parametar === 3) url += "?discount_gte=50";
+        else if (parametar === 3) url += "?discount_gte=500";
         else if (parametar === 4) url += "?discount_gte=970";
 
         const response = await axios.get(url);
@@ -281,21 +267,8 @@ async function seeAll(parametar) {
         var products = response.data;
         console.log(products);
 
-        await Promise.all(products.map(async (product, index) => {
-            try {
-              var imagesUrl=`http://localhost:5000/images?product_id=${product.id}&_limit=1`
-                var imageResponse = await axios.get(imagesUrl);
-                products[index].image = imageResponse.data[0]?.source ||
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
+        await Promise.all(products.map(fetchProductImageAndPrice));
 
-                products[index].newPrice = product.discount > 0
-                    ? (product.price - (product.price * product.discount / 100)).toFixed(2)
-                    : product.price;
-            } catch (err) {
-                console.error(`Greška pri učitavanju slike za proizvod ${product.name}`, err);
-                products[index].image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
-            }
-        }));
 
         var templateSource = document.getElementById("seeAll-template").innerHTML;
         var template = Handlebars.compile(templateSource);
