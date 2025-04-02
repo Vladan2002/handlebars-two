@@ -1,5 +1,6 @@
 var urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get("id");
+var cekanje=[1000,2000,3000,4000]
 console.log(id);
 var database="http://localhost:5000/"
 
@@ -71,7 +72,7 @@ async function slider() {
             
         `;
 
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, cekanje[1]));
 
         var imagesUrl=`${database}images?product_id=${id}`
 
@@ -109,7 +110,7 @@ async function slider() {
 slider();
 
 async function description() {
-    await new Promise(resolve => setTimeout(resolve, 20000));
+    await new Promise(resolve => setTimeout(resolve, cekanje[2]));
 
     const content = document.getElementById("description");
 
@@ -229,7 +230,7 @@ async function tabs() {
         const template = Handlebars.compile(templateSource);
         content.innerHTML = template();
 
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, cekanje[3]));
 
         let product = {
             productSpecsLeft: ["Nema specifikacija"],
@@ -322,7 +323,7 @@ async function similarProducts() {
 
         var response = await axios.get(`${database}products?subcategory_id=` + subcategory);
         var similarProducts = response.data;
-        await new Promise(resolve => setTimeout(resolve, 5000));
+        await new Promise(resolve => setTimeout(resolve, cekanje[0]));
         var temp=-1;
         for (var i = 0; i < similarProducts.length; i++) {
             similarProducts[i].newPrice = similarProducts[i].discount > 0

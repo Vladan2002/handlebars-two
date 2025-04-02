@@ -1,4 +1,5 @@
 var database="http://localhost:5000/"
+var cekanje=[1000,2000,3000,4000]
 
 document.addEventListener("DOMContentLoaded", function () {
     loadTemplate("layouts/header.hbs", "header-container");
@@ -30,7 +31,7 @@ async function sections () {
     async function loadSection(section, index) {
 
 
-        await new Promise(resolve => setTimeout(resolve, 0));
+        await new Promise(resolve => setTimeout(resolve, cekanje[0]));
 
         var products = await prod(section.param);
         if (products.length === 0) {
@@ -244,7 +245,7 @@ async function seeAll(parametar) {
 
         document.getElementById("backButton").style.display = "none";
 
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, cekanje[1]));
 
         if (parametar === 0) url += "?discount_gte=1";
         else if (parametar === 1) url += "?discount_gte=5";
