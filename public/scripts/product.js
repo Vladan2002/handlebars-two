@@ -1,6 +1,7 @@
 var urlParams = new URLSearchParams(window.location.search);
 var id = urlParams.get("id");
 var cekanje=[1000,2000,3000,4000]
+
 console.log(id);
 var database="http://localhost:5000/"
 
@@ -51,7 +52,6 @@ async function slider() {
 
 
         productContent.innerHTML = `
-            
                 <div class="slider__container skeleton-loader">
                     <div class="skeleton skeleton__img"></div>
                 </div>
@@ -77,22 +77,24 @@ async function slider() {
         var imagesUrl=`${database}images?product_id=${id}`
 
 
-        const imagesResponse = await axios.get(imagesUrl);
+
+        var imagesResponse = await axios.get(imagesUrl);
 
 
-        const productImages = imagesResponse||imagesResponse.data.length > 0 ? imagesResponse.data : [
+
+        var productImages = imagesResponse&&imagesResponse.data.length > 0 ? imagesResponse.data : [
             { source: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" }
         ];
-        const partialResponse = await axios.get('/views/partials/productSlider.hbs');
+        var partialResponse = await axios.get('/views/partials/productSlider.hbs');
         Handlebars.registerPartial('productSlider', partialResponse.data);
-        const templateElement = document.getElementById("slider-template");
+        var templateElement = document.getElementById("slider-template");
         if (!templateElement) {
             console.error("Greška: slider-template nije pronađen!");
             return;
         }
-        const templateSource = templateElement.innerHTML;
-        const template = Handlebars.compile(templateSource);
-        const generatedHtml = template({ productImages });
+        var templateSource = templateElement.innerHTML;
+        var template = Handlebars.compile(templateSource);
+        var generatedHtml = template({ productImages });
 
         productContent.innerHTML = generatedHtml;
 
@@ -112,10 +114,10 @@ slider();
 async function description() {
     await new Promise(resolve => setTimeout(resolve, cekanje[2]));
 
-    const content = document.getElementById("description");
+    var content = document.getElementById("description");
 
     try {
-        const [headerResponse, infoResponse, productResponse, descResponse] = await Promise.all([
+        var [headerResponse, infoResponse, productResponse, descResponse] = await Promise.all([
             axios.get('/views/partials/productHeader.hbs'),
             axios.get('/views/partials/productInfo.hbs'),
             axios.get(`${database}products?id=${id}`),
@@ -125,7 +127,7 @@ async function description() {
         Handlebars.registerPartial('productHeader', headerResponse.data);
         Handlebars.registerPartial('productInfo', infoResponse.data);
 
-        let product = {
+        var product = {
             productId: "Nema proizvoda",
             productName: "Proizvod ne postoji",
             newPrice: 0,
@@ -133,18 +135,18 @@ async function description() {
             productDesc: ["Nema opisa"]
         };
 
-        const hasProduct = productResponse.data.length > 0;
-        const hasDescription = descResponse.data.length > 0;
+        var hasProduct = productResponse.data.length > 0;
+        var hasDescription = descResponse.data.length > 0;
 
         if (!hasProduct && !hasDescription) {
-            const templateSource = document.getElementById("description-template").innerHTML;
-            const template = Handlebars.compile(templateSource);
+            var templateSource = document.getElementById("description-template").innerHTML;
+            var template = Handlebars.compile(templateSource);
             content.innerHTML = template(product);
             return;
         }
 
         if (hasProduct) {
-            const productData = productResponse.data[0];
+            var productData = productResponse.data[0];
             product.productId = productData.id;
             product.productName = productData.name;
             product.newPrice = productData.discount > 0
@@ -153,15 +155,15 @@ async function description() {
         }
 
         if (hasDescription) {
-            const descData = descResponse.data[0];
+            var descData = descResponse.data[0];
             product.productSKU = descData.SKU;
             product.productDesc = descData.product_description
                 ? descData.product_description.split("|")
                 : ["Nema opisa"];
         }
 
-        const templateSource = document.getElementById("description-template").innerHTML;
-        const template = Handlebars.compile(templateSource);
+        var templateSource = document.getElementById("description-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
         content.innerHTML = template(product);
     } catch (error) {
         console.error("Greška pri učitavanju podataka:", error);
@@ -173,17 +175,17 @@ description();
 
 
 function previewImages() {
-    let previewContainer = document.getElementById("image-preview");
+    var previewContainer = document.getElementById("image-preview");
     previewContainer.innerHTML = "";
 
-    let files = document.getElementById("product-images").files;
+    var files = document.getElementById("product-images").files;
 
     if (files.length > 0) {
         Array.from(files).forEach(file => {
-            let reader = new FileReader();
+            var reader = new FileReader();
 
             reader.onload = function (e) {
-                let img = document.createElement("img");
+                var img = document.createElement("img");
                 img.src = e.target.result;
                 img.style.width = "30px";
                 img.style.height = "30px";
@@ -202,7 +204,7 @@ function previewImages() {
 function loadTemplate(url, target, data = {}) {
     axios.get(url)
         .then(response => {
-            let template = Handlebars.compile(response.data);
+            var template = Handlebars.compile(response.data);
             document.getElementById(target).innerHTML = template(data);
         })
         .catch(error => console.error(`Error loading ${url}:`, error));
@@ -216,32 +218,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 async function tabs() {
-    const content = document.getElementById("table");
+    var content = document.getElementById("table");
 
     try {
-        const [tabsResponse, descResponse] = await Promise.all([
+        var [tabsResponse, descResponse] = await Promise.all([
             axios.get('/views/partials/productTabs.hbs'),
             axios.get(`${database}description?product_id=${id}`)
         ]);
 
         Handlebars.registerPartial('productTabs', tabsResponse.data);
 
-        const templateSource = document.getElementById("table-template").innerHTML;
-        const template = Handlebars.compile(templateSource);
+        var templateSource = document.getElementById("table-template").innerHTML;
+        var template = Handlebars.compile(templateSource);
         content.innerHTML = template();
 
         await new Promise(resolve => setTimeout(resolve, cekanje[3]));
 
-        let product = {
+        var product = {
             productSpecsLeft: ["Nema specifikacija"],
             productSpecsRight: [""]
         };
 
         if (descResponse.data.length > 0 && descResponse.data[0].product_specs) {
-            const specification = descResponse.data[0].product_specs.split("|");
+            var specification = descResponse.data[0].product_specs.split("|");
 
             if (specification.length > 0) {
-                const half = Math.ceil(specification.length / 2);
+                var half = Math.ceil(specification.length / 2);
                 product.productSpecsLeft = specification.slice(0, half);
                 product.productSpecsRight = specification.slice(half);
             }
@@ -261,7 +263,7 @@ async function similarProducts() {
     content.style.justifyContent = "flex-start";
 
     try {
-        const [cardTemplate, productResponse] = await Promise.all([
+        var [cardTemplate, productResponse] = await Promise.all([
             axios.get('/views/partials/card.hbs'),
             axios.get(`${database}products?id=` + id)
         ]);
@@ -290,8 +292,8 @@ async function similarProducts() {
                     return;
                 }
                 temp=-1;
-                for (let i = 0; i < res.data.length; i++) {
-                    let element = res.data[i];
+                for (var i = 0; i < res.data.length; i++) {
+                    var element = res.data[i];
 
                     if (element.id == id) {
                         temp=i;
@@ -397,59 +399,63 @@ function sideBar() {
 }
 sideBar();
 
-function subcategories(){
-    var select=document.getElementById('product-subcategory');
-    axios.get(`${database}subcategories`).then(function (res) {
-        console.log(res.data);
+function subcategories() {
+    return axios.get(`${database}subcategories`).then(function (res) {
+        var select = document.getElementById('product-subcategory');
+
+        select.innerHTML = '<option value="" selected disabled>Izaberi podkategoriju</option>';
+
         res.data.forEach(function (item) {
             var option = document.createElement("option");
             option.value = item.id;
-            option.text = item.name;
-            console.log(item.name);
+            option.textContent = item.name;
             select.appendChild(option);
+        });
 
-        })
-    })
+        return res.data;
+    });
 }
+
+
 subcategories();
 async function add() {
-    const sku = document.getElementById("SKU")?.value;
+    var sku = document.getElementById("SKU")?.value;
     if (!sku) {
         console.error("SKU nije unijet.");
         return;
     }
 
-    const name = document.getElementById("product-name")?.value || "";
+    var name = document.getElementById("product-name")?.value || "";
     if (!name.trim()) {
         console.error("Naziv proizvoda nije unijet.");
         return;
     }
 
-    const priceInput = document.getElementById("product-price")?.value;
-    const price = parseFloat(priceInput);
+    var priceInput = document.getElementById("product-price")?.value;
+    var price = parseFloat(priceInput);
     if (isNaN(price) || price <= 0) {
         console.error("Cijena mora biti validan broj veći od 0.");
         return;
     }
 
-    const discountInput = document.getElementById("product-discount")?.value;
-    const discount = parseFloat(discountInput) || 0;
+    var discountInput = document.getElementById("product-discount")?.value;
+    var discount = parseFloat(discountInput) || 0;
     if (isNaN(discount) || discount < 0 || discount > 100) {
         console.error("Popust mora biti broj između 0 i 100.");
         return;
     }
 
-    const subcategoryInput = document.getElementById("product-subcategory")?.value;
-    const subcategory_id = parseInt(subcategoryInput);
+    var subcategoryInput = document.getElementById("product-subcategory")?.value;
+    var subcategory_id = parseInt(subcategoryInput);
     if (isNaN(subcategory_id) || subcategory_id <= 0) {
         console.error("Podkategorija mora biti validan broj veći od 0.");
         return;
     }
 
-    const images = await convertImagesToBase64();
+    var images = await convertImagesToBase64();
 
 
-    const response = await axios.get(`${database}description?SKU=${sku}`);
+    var response = await axios.get(`${database}description?SKU=${sku}`);
     if (!response || !response.data) {
         console.error("Greška pri dohvatanju opisa za SKU:", sku);
         return;
@@ -460,16 +466,16 @@ async function add() {
         return;
     }
 
-    const predesc = document.getElementById("product-description")?.value || "";
-    const desc = predesc.replace(/,/g, ' | ');
+    var predesc = document.getElementById("product-description")?.value || "";
+    var desc = predesc.replace(/,/g, ' | ');
 
-    const preSpecs = document.getElementById("product-specs")?.value || "";
-    const specs = preSpecs.replace(/,/g, ' | ');
+    var preSpecs = document.getElementById("product-specs")?.value+"," || "";
+    var specs = preSpecs.replace(/,/g, ' | ');
 
     alert("Poslato!");
 
     try {
-        const productResponse = await axios.post(`${database}products`, {
+        var productResponse = await axios.post(`${database}products`, {
             name: name,
             price: price,
             discount: discount,
@@ -488,7 +494,7 @@ async function add() {
         });
 
         if (images.length > 0) {
-            const imagePromises = images.map(image => {
+            var imagePromises = images.map(image => {
                 return axios.post(`${database}images`, {
                     product_id: productResponse.data.id,
                     source: image
@@ -503,19 +509,19 @@ async function add() {
     }
 }
 async function convertImagesToBase64() {
-    const files = document.getElementById("product-images").files;
-    let base64Array = [];
+    var files = document.getElementById("product-images").files;
+    var base64Array = [];
 
     if (files.length === 0) {
         console.log("Nijedna slika nije izabrana!");
         return base64Array;
     }
 
-    const promises = [];
+    var promises = [];
 
     Array.from(files).forEach(file => {
-        const reader = new FileReader();
-        const promise = new Promise((resolve, reject) => {
+        var reader = new FileReader();
+        var promise = new Promise((resolve, reject) => {
             reader.onload = function (e) {
                 base64Array.push(e.target.result);
                 resolve(e.target.result);
@@ -568,6 +574,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
 function closePopup() {
     var popup = document.getElementById("popup");
     popup.style.display = "none";
@@ -578,3 +586,197 @@ function closePopup() {
 function kartica(id) {
     window.location.assign( `http://localhost:8080/views/product-id.html?id=${id}`);
 }
+
+async function devareProduct() {
+
+
+    var confirmDevare = confirm("Da li ste sigurni da želite da obrišete ovaj proizvod?");
+    if (!confirmDevare) return;
+
+    try {
+        var imagesResponse = await axios.get(`${database}images?product_id=${id}`);
+        var images = imagesResponse.data;
+
+        await Promise.all(images.map(image => axios.devare(`${database}images/${image.id}`)));
+
+        var descriptionsResponse = await axios.get(`${database}description?product_id=${id}`);
+        var descriptions = descriptionsResponse.data;
+        await Promise.all(descriptions.map(desc => axios.devare(`${database}description/${desc.id}`)));
+
+        await axios.devare(`${database}products/${id}`);
+        window.location.href = "http://localhost:8080/views/index.html";
+
+
+        alert("Proizvod uspešno obrisan!");
+    } catch (error) {
+        console.error("Greška prilikom brisanja proizvoda:", error);
+        alert("Došlo je do greške na serveru.");
+    }
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    var typedString = "";
+
+    document.addEventListener("keypress", (event) => {
+        var char = event.key.toLowerCase();
+
+        typedString += char;
+
+        if (typedString.length > 10) {
+            typedString = typedString.slice(-10);
+        }
+
+        if (typedString.endsWith("devare")) {
+            var devareEvenet = new CustomEvent("devareTyped");
+            document.dispatchEvent(devareEvenet);
+            typedString = "";
+        }
+    });
+
+    document.addEventListener("devareTyped", async () => {
+        await devareProduct();
+
+    });
+});
+document.addEventListener("DOMContentLoaded", () => {
+    var typedString = "";
+
+    document.addEventListener("keypress", (event) => {
+        var char = event.key.toLowerCase();
+
+        typedString += char;
+
+        if (typedString.length > 10) {
+            typedString = typedString.slice(-10);
+        }
+
+        if (typedString.endsWith("update")) {
+            var updateEvenet = new CustomEvent("updateTyped");
+            document.dispatchEvent(updateEvenet);
+            typedString = "";
+        }
+    });
+
+    document.addEventListener("updateTyped", async () => {
+        showPopup()
+        await fill();
+
+    });
+});
+
+
+
+function fill(){
+    Promise.all([
+        axios.get(`${database}products?id=${id}`),
+        axios.get(`${database}description?product_id=${id}`),
+
+
+]).then(async response => {
+    console.log("vlaka");
+        console.log(response[0].data[0].subcategory_id);
+        console.log(response[1].data);
+        document.getElementById('product-specs').value = response[1].data[0].product_specs;
+        document.getElementById('product-description').value = response[1].data[0].product_description;
+        await subcategories()
+        var subcategorySelect = document.getElementById('product-subcategory');
+        subcategorySelect.value = response[0].data[0].subcategory_id;
+
+
+        document.getElementById('product-subcategory').value = response[0].data[0].subcategory_id;
+        document.getElementById('product-name').value = response[0].data[0].name;
+        document.getElementById('product-price').value = response[0].data[0].price;
+        document.getElementById('product-discount').value = response[0].data[0].discount;
+        document.getElementById('SKU').value = response[1].data[0].SKU;
+
+        document.getElementById('dugme').style.display="none";
+        document.getElementById('drugoDugme').style.display="block";
+    })
+}
+
+async function update(){
+
+        var sku = document.getElementById("SKU")?.value;
+        if (!sku) {
+            console.error("SKU nije unijet.");
+            return;
+        }
+
+        var name = document.getElementById("product-name")?.value || "";
+        if (!name.trim()) {
+            console.error("Naziv proizvoda nije unijet.");
+            return;
+        }
+
+        var priceInput = document.getElementById("product-price")?.value;
+        var price = parseFloat(priceInput);
+        if (isNaN(price) || price <= 0) {
+            console.error("Cijena mora biti validan broj veći od 0.");
+            return;
+        }
+
+        var discountInput = document.getElementById("product-discount")?.value;
+        var discount = parseFloat(discountInput) || 0;
+        if (isNaN(discount) || discount < 0 || discount > 100) {
+            console.error("Popust mora biti broj između 0 i 100.");
+            return;
+        }
+
+        var subcategoryInput = document.getElementById("product-subcategory")?.value;
+        var subcategory_id = parseInt(subcategoryInput);
+        if (isNaN(subcategory_id) || subcategory_id <= 0) {
+            console.error("Podkategorija mora biti validan broj veći od 0.");
+            return;
+        }
+
+        try {
+            var skuCheckResponse = await axios.get(`${database}description?SKU=${sku}`);
+            if (!skuCheckResponse || !skuCheckResponse.data) {
+                console.error("Greška pri dohvatanju opisa za SKU:", sku);
+                return;
+            }
+
+
+            if (skuCheckResponse.data.length > 0 && skuCheckResponse.data[0].product_id !== id) {
+                console.error(`Greška: SKU "${sku}" već postoji kod drugog proizvoda (ID: ${skuCheckResponse.data[0].product_id}).`);
+                return;
+            }
+            var descPP = await axios.get(`${database}description?product_id=${id}`);
+
+            var descId=descPP.data[0].id;
+            var predesc = document.getElementById("product-description")?.value || "";
+            var desc = predesc.replace(/,/g, ' | ');
+
+            var preSpecs = document.getElementById("product-specs")?.value || "";
+            var specs = preSpecs.replace(/,/g, ' | ');
+
+            alert("Ažuriranje započeto...");
+
+            var productResponse = await axios.put(`${database}products/${id}`, {
+                name: name,
+                price: price,
+                discount: discount,
+                subcategory_id: subcategory_id
+            });
+
+            console.log("Status:", productResponse.status);
+            console.log("Response body:", productResponse.data);
+
+
+            await axios.put(`${database}description/${descId}`, {
+                product_id:id,
+                SKU: sku,
+                product_description: desc,
+                product_specs: specs
+            });
+
+            alert("Proizvod uspešno ažuriran!");
+        } catch (err) {
+            console.error("Greška pri ažuriranju proizvoda:", err);
+        }
+    }
+
+
+
+

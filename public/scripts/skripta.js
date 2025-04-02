@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 async function sections () {
-    const [productsResponse, cardResponse] = await Promise.all([
+    var [productsResponse, cardResponse] = await Promise.all([
         axios.get('/views/partials/productsSection.hbs'),
         axios.get('/views/partials/card.hbs')
     ]);
@@ -57,7 +57,7 @@ async function sections () {
 };
 
 async function prod(parametar) {
-    let url = database+"products";
+    var url = database+"products";
 
     if (parametar === 0) url += "?discount_gte=0&_limit=4";
     else if (parametar === 1) url += "?discount_gte=5&_limit=8";
@@ -66,10 +66,10 @@ async function prod(parametar) {
     else if (parametar === 4) url += "?discount_gte=970&_limit=4";
 
     try {
-        const response = await axios.get(url);
+        var response = await axios.get(url);
         if (!response.data || response.data.length === 0) return [];
 
-        let products = response.data;
+        var products = response.data;
 
 
         await Promise.all(products.map(fetchProductImageAndPrice));
@@ -85,7 +85,7 @@ sections();
 
 async function fetchProductImageAndPrice(product) {
     try {
-        let imageResponse = await axios.get(`${database}images?product_id=${product.id}&_limit=1`);
+        var imageResponse = await axios.get(`${database}images?product_id=${product.id}&_limit=1`);
 
         product.image = imageResponse.data[0]?.source ||
             "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
@@ -99,9 +99,6 @@ async function fetchProductImageAndPrice(product) {
         product.image = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png";
     }
 }
-
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
     axios.get("/views/partials/accordion.hbs").then((accordionResponse) => {
@@ -126,8 +123,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             })
 
-
-
             var menuTemplateSource = document.getElementById("menu-template").innerHTML;
             var menuTemplate = Handlebars.compile(menuTemplateSource);
             var menuHtml = menuTemplate({ categories });
@@ -146,11 +141,11 @@ document.addEventListener("DOMContentLoaded", function () {
             .then((response) => {
                 Handlebars.registerPartial("post", response.data);
 
-                const postTemplateSource = response.data;
-                const postTemplate = Handlebars.compile(postTemplateSource);
+                var postTemplateSource = response.data;
+                var postTemplate = Handlebars.compile(postTemplateSource);
 
-                let postsHtml = "";
-                for (let i = 0; i < 2; i++) {
+                var postsHtml = "";
+                for (var i = 0; i < 2; i++) {
                     postsHtml += postTemplate();
                 }
 
@@ -169,14 +164,14 @@ function loadsSearch() {
         .then((searchResponse) => {
             Handlebars.registerPartial("search", searchResponse.data);
 
-            const searchTemplate = Handlebars.compile(searchResponse.data);
-            const searchHtml = searchTemplate();
+            var searchTemplate = Handlebars.compile(searchResponse.data);
+            var searchHtml = searchTemplate();
 
             document.getElementById("container__side").insertAdjacentHTML("beforeend", searchHtml);
             loadPosts();
             axios.get("/views/partials/ad.hbs").then((adResponse) => {
-                const adTemplate = Handlebars.compile(adResponse.data);
-                const adHtml = adTemplate();
+                var adTemplate = Handlebars.compile(adResponse.data);
+                var adHtml = adTemplate();
                 document.getElementById("container__side").insertAdjacentHTML("beforeend", adHtml);
 
 
@@ -192,7 +187,7 @@ function loadsSearch() {
 function loadTemplate(url, target, data = {}) {
     axios.get(url)
         .then(response => {
-            let template = Handlebars.compile(response.data);
+            var template = Handlebars.compile(response.data);
             document.getElementById(target).innerHTML = template(data);
         })
         .catch(error => console.error(`Error loading ${url}:`, error));
@@ -236,7 +231,7 @@ async function seeAll(parametar) {
         var partial = await axios.get("/views/partials/card.hbs");
         Handlebars.registerPartial("card", partial.data);
 
-        let url = `${database}products`;
+        var url = `${database}products`;
 
         var templateSource = document.getElementById("seeAll-template").innerHTML;
         var template = Handlebars.compile(templateSource);
@@ -253,7 +248,7 @@ async function seeAll(parametar) {
         else if (parametar === 3) url += "?discount_gte=500";
         else if (parametar === 4) url += "?discount_gte=970";
 
-        const response = await axios.get(url);
+        var response = await axios.get(url);
 
         if (!response.data || response.data.length === 0) {
             console.warn("Nema proizvoda za prikaz.");
